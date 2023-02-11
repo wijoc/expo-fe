@@ -37,20 +37,24 @@ module.exports = {
         'maxheight': 'max-height'
       },
       keyframes: {
-        fadeIn: {
+        fade: {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' }
         },
-        slideY: {
+        slideHeader: {
           '0%': { transform: 'translateY(-3rem)' },
           '100%': { transform: 'translateY(0)' }
+        },
+        slideY: {
+          '0%': { transform: 'translateY(100%)' },
+          '100%': { transform: 'translateY(0)' }
+        },
+        shimmer: {
+          '100%': { transform: 'translateX(100%)' }
         }
       },
       animation: {
-        fadeIn: 'fadeIn 0.5s ease-in-out normal',
-        fadeOut: 'fadeIn 0.5s ease-in-out reverse',
-        slideDown: 'slideY 0.75s ease-in-out normal',
-        slideUp: 'slideY 0.75s ease-in-out reverse'
+        headerDown: 'slideHeader 0.75s ease-in-out normal'
       }
     },
     borderWidth: {

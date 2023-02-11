@@ -5,8 +5,10 @@ import LandingLayout from '@/layouts/LandingLayout.vue'
 import ExhibitionLayout from '@/layouts/ExhibitionLayout.vue'
 import LandingView from '@/views/LandingView.vue'
 import ExhibitionView from '@/views/ExhibitionView.vue'
+import ShopView from '@/views/ShopView.vue'
 import FaqView from '@/views/FaqView.vue'
 import RegistrationView from '@/views/RegistrationView.vue'
+import LoginView from '@/views/LoginView.vue'
 
 Vue.use(VueRouter)
 
@@ -24,10 +26,9 @@ const routes = [
     meta: { layout: ExhibitionLayout }
   },
   {
-    path: '/exhibition/store/:id?',
-    name: 'store',
-    component: ExhibitionView,
-    props: { exhibContent: 'detail-store' },
+    path: '/:domain?',
+    name: 'shop',
+    component: ShopView,
     meta: { layout: ExhibitionLayout }
   },
   {
@@ -54,6 +55,11 @@ const routes = [
     path: '/registration',
     name: 'registration',
     component: RegistrationView
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: LoginView
   }
 ]
 

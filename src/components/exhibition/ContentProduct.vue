@@ -1,5 +1,5 @@
 <template>
-  <div id="content-product" class="animate-fadeIn">
+  <div id="content-product" class="animate-[fade_0.5s_ease-in-out_normal]">
     <template v-if="this.rowdata.length > 0">
       <div class="flex flex-col justify-between gap-2 mb-3 lg:flex-row xl:flex-nowrap">
         <p class="w-fit text-sm">Menampilkan 1 - 30 Produk dari total 99.999 asdasdasd

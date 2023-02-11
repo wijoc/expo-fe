@@ -53,10 +53,10 @@ export default {
     windowScrolled () {
       if (window.scrollY > 10) {
         this.$refs.header.classList.add('header-scrolled')
-        this.$refs.header.classList.add('animate-slideDown')
+        this.$refs.header.classList.add('animate-headerDown')
       } else {
         this.$refs.header.classList.remove('header-scrolled')
-        this.$refs.header.classList.remove('animate-slideDown')
+        this.$refs.header.classList.remove('animate-headerDown')
       }
     },
     menuClicked () {

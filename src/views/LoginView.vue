@@ -12,10 +12,16 @@
           <p class="text-sm text-gray-400">Gabung dan jangkau pasar lebih luas bersama kami</p>
         </div>
         <div class="card shadow-lg w-full h-fit max-h-full flex flex-col gap-2 px-4 pt-2 pb-5 border sm:w-6/12 sm:mt-6 md:w-5/12 lg:4/12 xl:w-3/12 xl:mt-20">
-          <h1 class="text-lg font-bold text-center">Daftar Sekarang!</h1>
-          <span class="text-sm text-gray-400 text-center">
-            Sudah terdaftar?
-            <router-link to="/login" class="text-primary cursor-pointer">Masuk</router-link>
+          <h1 class="text-lg font-bold text-center uppercase">Masuk</h1>
+          <hr class="bg-black/90">
+          <CustomInput
+            v-for="(lf, lIndex) in loginForm"
+            :key="lIndex"
+            :inputAttr="lf"
+            :modelValue.sync="loginInput[lf.value]" />
+          <button class="btn btn-normal rounded-lg text-center uppercase w-full btn-outline-primary mt-2">Masuk</button>
+          <span class="relative text-sm text-gray-400 text-center px-4 my-2 before:absolute before:w-3/12 before:h-[.05rem] before:bg-gray-300 before:top-[50%] before:left-0 after:absolute after:w-3/12 after:h-[.05rem] after:bg-gray-300 after:top-[50%] after:right-0">
+            atau masuk dengan
           </span>
           <button class="relative btn btn-normal btn-outline-gray rounded-lg text-center uppercase w-full">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" class="absolute left-5 w-6 h-6">
@@ -23,19 +29,9 @@
             </svg>
             Google
           </button>
-          <span class="relative text-sm text-gray-400 text-center px-4 my-2 before:absolute before:w-3/12 before:h-[.05rem] before:bg-gray-300 before:top-[50%] before:left-0 after:absolute after:w-3/12 after:h-[.05rem] after:bg-gray-300 after:top-[50%] after:right-0">
-            atau daftar dengan
-          </span>
-          <CustomInput
-            v-for="(rF, rIndex) in regForm"
-            :key="rIndex"
-            :inputAttr="rF"
-            :modelValue.sync="regInput[rF.value]" />
-          <button class="btn btn-normal rounded-lg text-center uppercase w-full btn-disabled">DAFTAR</button>
-          <hr class="bg-black my-2 w-1/2 self-center">
-          <span class="w-full self-center text-center text-xs text-gray-400">
-            <p>Dengan mendaftar, saya menyetujui</p>
-            <a class="text-primary cursor-pointer">Syarat dan Ketentuan</a> serta <a class="text-primary cursor-pointer">Kebijakan Privasi</a>
+          <span class="mt-3 text-sm text-gray-400 text-center">
+            Belum punya akun?
+            <router-link to="/registration" class="text-primary cursor-pointer">Daftar Sekarang!</router-link>
           </span>
         </div>
       </div>
@@ -53,18 +49,16 @@ export default {
   },
   data () {
     return {
-      regInput: {
+      loginInput: {
         inputIdentifier: null,
-        inputName: null,
-        inputPassword: null,
-        rePassword: null
+        inputPassword: null
       },
-      regForm: [
+      loginForm: [
         {
           divClass: 'mb-1.5',
           inputType: 'text',
           inputClass: 'w-full rounded form-control form-control-base',
-          inputID: 'reg-identifier',
+          inputID: 'login-identifier',
           label: 'Email / No. Handphone',
           labelClass: 'font-light text-sm',
           isError: false,
@@ -75,6 +69,22 @@ export default {
           value: 'inputIdentifier',
           placeholder: 'Email atau Nomor Handphone',
           flag: 'text'
+        },
+        {
+          divClass: 'mb-1.5',
+          inputType: 'password',
+          inputClass: 'w-full rounded form-control form-control-base',
+          inputID: 'login-password',
+          label: 'Password',
+          labelClass: 'font-light text-sm',
+          isError: false,
+          errorMessage: 'Error Password',
+          disabled: false,
+          readonly: false,
+          hidden: false,
+          value: 'inputPassword',
+          placeholder: 'Password',
+          flag: 'password'
         }
       ]
     }

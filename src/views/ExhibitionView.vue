@@ -1,9 +1,9 @@
 <template>
   <main class="bg-white/95 min-h-screen">
     <SearchBar
-      :storeSearch="this.exhibContent === 'detail-store' ? true : false"
+      :shopSearch="false"
       :search.sync="searchTerm" />
-    <section class="container min-h-screen" v-if="this.showContent === 'content-toko' || this.showContent === 'content-product'">
+    <section class="container min-h-screen">
       <div id="content" class="flex flex-row flex-nowrap gap-5 pt-10 sm:pt-16">
         <div id="filter" class="hidden h-full md:flex md:flex-col md:gap-2 md:w-3/12">
           <h3 class="font-medium text-lg">Filter</h3>
@@ -81,11 +81,8 @@
             </button>
           </div>
           <div class="tab-content">
-            <ContentStore
+            <ContentShop
               ref="content-toko"
-              :data="this.storesFilteredData.rowdata"
-              :info="this.listInfo"
-              :sort.sync="this.sort"
               :keyword="this.searchTerm"
               v-show="showContent === 'content-toko'" />
 
@@ -100,152 +97,27 @@
         </div>
       </div>
     </section>
-    <StoreView
-      :storeID="this.$route.params.id"
-      v-else-if="this.showContent === 'detail-store'" />
-    <ProductView :productID="this.$route.params.id" v-else />
   </main>
 </template>
 
 <script>
 import SearchBar from '@/components/exhibition/SearchBar.vue'
-import StoreView from '@/views/StoreView.vue'
-import ProductView from '@/views/ProductView.vue'
-import ContentStore from '@/components/exhibition/ContentStore.vue'
+// import ProductView from '@/views/ProductView.vue'
+import ContentShop from '@/components/exhibition/ContentShop.vue'
 import ContentProduct from '@/components/exhibition/ContentProduct.vue'
 
 export default {
   name: 'ExhibitionView',
   components: {
     SearchBar,
-    StoreView,
-    ProductView,
-    ContentStore,
+    // ProductView,
+    ContentShop,
     ContentProduct
   },
   data () {
     return {
       showContent: this.exhibContent,
-      storesRawData: [
-        {
-          id: 1,
-          store_code: 'STR001',
-          name: 'Toko 1',
-          address: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente, numquam?',
-          img: 'src/assets/img/toko/toko_1.jpg',
-          products: [
-            {
-              id: 1,
-              product_code: 'PRD001',
-              store_id: 1,
-              name: 'T1 Prod 01',
-              img: 'src/assets/img/product/product_1.jpg',
-              price: 35000,
-              disc_percent: 100,
-              disc_price: 10000,
-              description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente, numquam?'
-            },
-            {
-              id: 2,
-              product_code: 'PRD002',
-              store_id: 1,
-              name: 'T1 Prod 02',
-              img: 'src/assets/img/product/product_1.jpg',
-              price: 45000,
-              disc_percent: 100,
-              disc_price: 10000,
-              description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente, numquam?'
-            },
-            {
-              id: 3,
-              product_code: 'PRD003',
-              store_id: 1,
-              name: 'T1 Prod 03',
-              img: 'src/assets/img/product/product_1.jpg',
-              price: 55000,
-              disc_percent: 100,
-              disc_price: 10000,
-              description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente, numquam?'
-            }
-          ]
-        },
-        {
-          id: 1,
-          store_code: 'STR001',
-          name: 'Toko 1',
-          address: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente, numquam?',
-          img: 'src/assets/img/toko/toko_1.jpg',
-          products: [
-            {
-              id: 1,
-              product_code: 'PRD001',
-              store_id: 1,
-              name: 'T1 Prod 01',
-              img: 'src/assets/img/product/product_1.jpg',
-              price: 35000,
-              disc_percent: 100,
-              disc_price: 10000,
-              description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente, numquam?'
-            },
-            {
-              id: 2,
-              product_code: 'PRD002',
-              store_id: 1,
-              name: 'T1 Prod 02',
-              img: 'src/assets/img/product/product_1.jpg',
-              price: 45000,
-              disc_percent: 100,
-              disc_price: 10000,
-              description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente, numquam?'
-            },
-            {
-              id: 3,
-              product_code: 'PRD003',
-              store_id: 1,
-              name: 'T1 Prod 03',
-              img: 'src/assets/img/product/product_1.jpg',
-              price: 55000,
-              disc_percent: 100,
-              disc_price: 10000,
-              description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente, numquam?'
-            }
-          ]
-        }
-      ],
-      productsRawData: [
-        {
-          id: 1,
-          product_code: 'PRD001',
-          store_id: 1,
-          name: 'T1 Prod 01',
-          price: 35000,
-          disc_percent: 100,
-          disc_price: 10000,
-          description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente, numquam?'
-        },
-        {
-          id: 2,
-          product_code: 'PRD002',
-          store_id: 1,
-          name: 'T1 Prod 02',
-          img: 'src/assets/img/product/product_1.jpg',
-          price: 45000,
-          disc_percent: 100,
-          disc_price: 10000,
-          description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente, numquam?'
-        },
-        {
-          id: 3,
-          product_code: 'PRD003',
-          store_id: 1,
-          name: 'T1 Prod 03',
-          img: 'src/assets/img/product/product_1.jpg',
-          price: 55000,
-          disc_percent: 100,
-          disc_price: 10000,
-          description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente, numquam?'
-        }
-      ],
+      productsRawData: [],
       listInfo: {
         count_all_data: 30,
         count_show: 30,
@@ -286,63 +158,6 @@ export default {
     }
   },
   computed: {
-    storesFilteredData: function () {
-      if (this.storesRawData.length > 0) {
-        var filteredData = this.storesRawData.filter((store) => {
-          /** Filter berdasar hasil filter option */
-          return store
-        }).filter((store) => {
-          if (store.name.toString().toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1) {
-            return store
-          }
-          return false
-        })
-
-        if (this.sort.by !== null && this.sort.by !== '') {
-          const sB = this.sort.by
-          const sO = this.sort.order
-
-          filteredData = filteredData.sort(function (a, b) {
-            if (a[sB] > b[sB]) {
-              return (sO === 'asc' ? 1 : -1)
-            } else if (a[sB] < b[sB]) {
-              return (sO === 'asc' ? -1 : 1)
-            }
-            return 0
-          })
-        }
-
-        if (filteredData.length > 0) {
-          var listData = {
-            filtered: filteredData.length,
-            rowdata: []
-          }
-
-          filteredData.slice(this.listInfo.row_start, this.listInfo.row_end).map((data, index) => {
-            return listData.rowdata.push({
-              identification: data.id,
-              id: data.id,
-              name: this.shortenTitle(data.name),
-              address: data.address,
-              img: data.img,
-              products: data.products
-            })
-          })
-
-          return listData
-        } else {
-          return {
-            filtered: filteredData.length,
-            rowdata: []
-          }
-        }
-      } else {
-        return {
-          filtered: 0,
-          rowdata: []
-        }
-      }
-    },
     productsFilteredData: function () {
       if (this.productsRawData.length > 0) {
         var filteredData = this.productsRawData.filter((prd) => {

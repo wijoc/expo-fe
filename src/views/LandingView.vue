@@ -5,7 +5,7 @@
     <section id="home" ref="home" class="min-h-screen bg-gradient-to-b from-sky-600 to-white/70 flex items-center">
       <div class="container">
         <div class="flex flex-wrap justify-center sm:flex-no-wrap sm:gap-1 md:gap-2 md:justify-evenly">
-          <div class="animate-slideLeftIn w-full flex justify-center leading-none sm:w-5/12 md:5/12 md:justify-self-center md:justify-start lg:justify-center">
+          <div class="w-full flex justify-center leading-none sm:w-5/12 md:5/12 md:justify-self-center md:justify-start lg:justify-center">
             <div class="self-center">
               <h2 class="text-3xl text-white font-bold tracking-wider sm:text-2xl">Selamat Datang</h2>
               <h1 class="text-banner text-[6.4em] sm:text-7xl md:text-[6.4em]">UMKM</h1>
