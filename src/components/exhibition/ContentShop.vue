@@ -1,9 +1,41 @@
 <template>
   <div id="content-toko" class="animate-[fade_0.5s_ease-in-out_normal]">
-    <template v-if="this.info.count_data > 0">
-      <div class="flex flex-row justify-between items-center gap-2 mb-3">
+    <!-- Mobile Filter -->
+    <div class="relative w-full h-full flex flex-row gap-2 mb-2 overflow-x-scroll md:hidden">
+      <template v-if="this.filterLoading">
+        <button class="w-28 h-8 bg-gray-300 rounded-lg skeleton"></button>
+        <button class="w-28 h-8 bg-gray-300 rounded-lg skeleton"></button>
+      </template>
+      <template v-else>
+        <button class="sticky left-0 btn btn-outline-gray rounded-md" ref="filter-button" id="filter-button" @click="toggleFilter('toggle')">
+          <i class="fa-solid fa-filter"></i>
+          Filter
+        </button>
+        <button class="btn btn-outline-gray rounded-md">
+          <i class="fa-solid fa-arrow-up-short-wide"></i>
+          Sort
+        </button>
+      </template>
+    </div>
+
+    <div v-if="this.isLoading.data" class="grid grid-flow-row grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-x-3 sm:gap-y-5 lg:grid-cols-3">
+      <div class="relative content-item pb-1 flex flex-col gap-y-4 bg-gray-100/50 border border-gray-300 rounded shadow-md" v-for="i in 3" :key="i">
+        <div class="flex flex-row gap-2 px-2 py-1 md:flex-col md:gap-1 md:h-full">
+          <div class="w-20 h-20 rounded-full bg-gray-300/80 skeleton"></div>
+          <div class="flex flex-col gap-1 pt-2 px-1">
+            <span class="w-48 h-5 rounded bg-gray-300/80 skeleton"></span>
+            <span class="w-20 h-4 rounded bg-gray-300/80 skeleton"></span>
+          </div>
+        </div>
+        <div class="flex flex-row flex-nowrap gap-2 mx-1 justify-center">
+          <div class="w-1/3 h-20 bg-gray-300/80 rounded skeleton" v-for="i in 3" :key="i"></div>
+        </div>
+      </div>
+    </div>
+    <template v-else-if="this.isLoading.data === false && this.info.count_data > 0">
+      <div class="hidden sm:flex flex-row justify-between items-center gap-2 mb-3">
         <p class="w-fit text-sm">
-          Menampilkan {{ this.info.row_start }} - {{ this.info.row_end }} Toko dari total {{ this.info.count_all }}
+          Menampilkan {{ this.info.row_start + (this.info.row_end > this.info.row_start ? '-' + this.info.row_end : '') }} product dari total {{ this.info.count_all }}
           <span v-if="this.keyword !== null && this.keyword !== ''">
             untuk <span class="font-bold">"{{ this.keyword }}"</span>
           </span>
@@ -19,8 +51,8 @@
       </div>
       <div class="grid grid-flow-row grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-x-3 sm:gap-y-5 lg:grid-cols-3">
         <div class="relative content-item pb-1 flex flex-col gap-y-3" v-for="(shop, i) in rawdata" :key="i">
-          <div class="flex flex-row gap-2 md:flex-col md:gap-1 md:h-full" @click="showDetail(shop.identification)">
-            <img src="@/assets/img/toko/toko_1.jpg" alt="" class="w-4/12 md:w-auto md:rounded-b-sm lg:max-h-36">
+          <div class="flex flex-row gap-2 md:flex-col md:gap-1 md:h-full" @click="showShop(shop.domain)">
+            <img src="@/assets/img/toko/toko_1.jpg" alt="" class="w-20 h-20 rounded-full md:w-auto md:h-auto md:max-h-32 md:rounded-sm lg:max-h-36">
             <div class="flex flex-col pt-2 px-1">
               <h6 class="uppercase font-semibold text-sm tracking-tight text-left">
                 {{ shop.store_name }}
@@ -30,10 +62,10 @@
               </p>
             </div>
           </div>
-          <div :class="'flex flex-row flex-nowrap gap-2 mx-1' + (shop.products && shop.products.length < 3 ? 'justify-start' : 'justify-center')">
-            <div class="flex flex-col justify-center gap-2 shadow-md rounded-sm max-w-1/3" v-for="(products, spI) in shop.products" :key="spI" @click="showProduct(shop.domain, products.uuid)">
-              <img src="@/assets/img/product/product_1.jpg" alt="" class="max-h-[4.5rem]">
-              <p class="text-sm font-semibold text-secondary text-center">{{ products.price | rupiah }}</p>
+          <div :class="'flex flex-row flex-nowrap gap-1 mx-1 min-h-full' + (shop.products && shop.products.length < 3 ? 'justify-start' : 'justify-center')">
+            <div class="flex flex-col justify-center gap-2 shadow-md rounded-sm max-w-[33.333333%] h-full border-1 border-gray-300" v-for="(products, spI) in shop.products" :key="spI" @click="showProduct(shop.domain, products.uuid)">
+              <img src="@/assets/img/product/product_1.jpg" alt="" class="h-full max-h-[4.5rem]">
+              <p class="text-xs font-semibold text-secondary text-center whitespace-normal">{{ products.price | abbrev }}</p>
             </div>
           </div>
           <button class="bottom-1 w-10/12 self-center btn btn-sm btn-outline-primary rounded text-center" @click="showShop(shop.domain)">
@@ -42,8 +74,9 @@
         </div>
       </div>
     </template>
-    <div class="bg-red-500/50 text-center p-1" v-else>
-      <p class="font-bold text-gray-100 tracking-wider uppercase">Tidak ada toko terdaftar</p>
+    <div class="flex flex-col justify-items-center items-center gap-3 w-full h-full bg-white/60" v-else >
+      <img src="@/assets/img/data_not_found.jpg" alt="no data found" class="w-56 max-h-56 rounded-lg">
+      <h3 class="font-md font-extrabold text-primary uppercase">Belum ada toko terdaftar</h3>
     </div>
   </div>
 </template>
@@ -73,17 +106,35 @@ export default {
       },
       requestPage: 1,
       requestPerPage: 30,
-      message: ''
+      message: '',
+      isLoading: {
+        filter: false,
+        data: false
+      }
     }
   },
   props: {
     keyword: {
       type: String,
       default: () => { return null }
+    },
+    filterData: {
+      type: Object,
+      default: () => {
+        return {
+          city: [],
+          category: []
+        }
+      }
+    },
+    filterLoading: {
+      type: Boolean,
+      default: () => { return false }
     }
   },
   methods: {
     async getShopList () {
+      this.isLoading.data = true
       this.rawdata = await axios.get(axConfig.shopUrl, {
         params: {
           with_product: true,
@@ -91,7 +142,9 @@ export default {
           sort: this.sort.by,
           order: this.sort.order,
           page: this.requestPage,
-          per_page: this.requestPerPage
+          per_page: this.requestPerPage,
+          city: this.filterData.city,
+          category: this.filterData.category
         }
       })
         .then((response) => {
@@ -107,7 +160,8 @@ export default {
           return []
         })
 
-      this.setRowStartEnd()
+      await this.setRowStartEnd()
+      this.isLoading.data = false
     },
     setRowStartEnd () {
       if (this.info.active_page > 1) {
@@ -133,8 +187,6 @@ export default {
       this.getShopList()
     },
     showShop (domain) {
-      console.log(domain)
-      // this.$router.push('/store/' + domain)
       this.$router.push('/' + domain)
     },
     showProduct (shop, id) {
@@ -144,9 +196,25 @@ export default {
   filters: {
     rupiah: function (value) {
       return currencyHelper.currencyFormat(value, '.', 'Rp')
+    },
+    abbrev: function (value) {
+      return currencyHelper.currencyAbbreviate(value, 100000, 0)
     }
   },
-  mounted () {
+  watch: {
+    keyword: {
+      handler: function (newValue) {
+        this.getShopList()
+      }
+    },
+    filterData: {
+      deep: true,
+      handler: function (newValue) {
+        this.getShopList()
+      }
+    }
+  },
+  beforeMount () {
     this.getShopList()
   }
 }

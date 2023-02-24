@@ -323,15 +323,15 @@
   }
 
   .input-checkbox + label, .input-radio + label {
-    @apply text-lg tracking-wider;
+    @apply text-lg font-light tracking-wider;
   }
 
   .input-checkbox-base + label, .input-radio-base + label {
-    @apply text-base tracking-wider;
+    @apply text-base font-light tracking-wider;
   }
 
   .input-checkbox-sm + label, .input-radio-sm + label {
-    @apply text-sm tracking-wider;
+    @apply text-sm font-light tracking-wider;
   }
 
   .scrollbar::-webkit-scrollbar-track {

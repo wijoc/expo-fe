@@ -3,8 +3,11 @@ const prefix = 'beta/'
 
 export const shopUrl = apiDomain + prefix + 'stores/'
 export const productUrl = apiDomain + prefix + 'products/'
-export const productCategoryUrl = apiDomain + prefix + 'categories/product'
-export const shopCategoryUrl = apiDomain + prefix + 'categories/shop/'
+export const productCategoryUrl = apiDomain + prefix + 'categories/product/'
+export const shopCategoryUrl = apiDomain + prefix + 'categories/store/'
+export const provinceUrl = apiDomain + prefix + 'provinces/'
+export const cityUrl = apiDomain + prefix + 'cities/'
+export const districtUrl = apiDomain + prefix + 'districts/'
 
 export const headers = {
   Authorization: 'Bearer ' + localStorage.getItem('access_token')

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="this.divClass">
     <div class="content-item border border-gray-200 flex flex-col justify-center" v-for="(prd, i) in this.rowdata" :key="i" @click="showProduct(prd.uuid)">
       <span class="bg-gray-100 flex justify-center items-center w-full max-h-44">
         <img src="@/assets/img/product/product_1.jpg" alt="" class="max-w-full max-h-44">
@@ -31,6 +31,7 @@ import * as StringHelper from '@/helper/StringHelper.js'
 export default {
   name: 'GridProduct',
   props: {
+    divClass: {},
     rowdata: {
       type: Array,
       default: () => { return [] }

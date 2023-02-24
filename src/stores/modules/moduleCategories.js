@@ -4,12 +4,16 @@ import * as axConfig from '@/config.js'
 const namespaced = true
 
 const state = {
-  vxProductCategories: []
+  vxProductCategories: [],
+  vxShopCategories: []
 }
 
 const mutations = {
   setProductCategories (state, payload) {
     state.vxProductCategories = payload
+  },
+  setShopCategories (state, payload) {
+    state.vxShopCategories = payload
   }
 }
 
@@ -29,6 +33,21 @@ const actions = {
       })
 
     commit('setProductCategories', categories)
+  },
+  async getShopCategories ({ commit }, payload) {
+    var categories = await axios.get(axConfig.shopCategoryUrl, {
+      params: {
+        search: payload.search ? payload.search : null
+      }
+    })
+      .then((response) => {
+        return response.data.data
+      })
+      .catch(() => {
+        return null
+      })
+
+    commit('setShopCategories', categories)
   }
 }
 

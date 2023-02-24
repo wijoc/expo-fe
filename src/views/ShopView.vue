@@ -78,7 +78,7 @@
           <div id="mobile-filter" ref="mobile-filter" class="w-full h-full mt-24 border-t-2 bg-white border-gray-600 rounded-t-2xl drop-shadow-2xl px-5 py-3">
             <span class="flex flex-nowrap justify-between mb-1">
               <h3 class="font-bold text-2xl text-center">Filter</h3>
-              <i class="fa-solid fa-xmark text-xl text-red-600" id="filter-close-button" @click="toggleFilter(false)"></i>
+              <i class="fa-solid fa-xmark text-xl text-gray-400" id="filter-close-button" @click="toggleFilter(false)"></i>
             </span>
             <div class="flex flex-col transition-all duration-200 ease-in-out divide-y-2">
               <div ref="category-filter" class="accordion">
@@ -88,20 +88,18 @@
                   <i class="fa-solid fa-caret-right right-0 transition duration-[250ms] ease-in-out absolute"></i>
                 </label>
                 <ul class="accordion-content">
-                  <template v-for="(fCategory, i) in this.vxProductCategories">
-                    <li :key="i">
-                      <div class="flex flex-row items-center gap-3">
-                        <input type="checkbox" class="input-checkbox" :id="'filter-kategori-' + fCategory.id" :value="fCategory.id" v-model="dataFilter.category" @change="setFilter(i)">
-                        <label :for="'filter-kategori-' + fCategory.id">{{ fCategory.name }}</label>
-                      </div>
-                      <ul v-if="fCategory.sub_category.length > 0" class="pl-6">
-                        <li class="flex flex-row items-center gap-3" v-for="(subCategory, j) in fCategory.sub_category" :key="j">
-                          <input type="checkbox" class="input-checkbox" :id="'filter-kategori-' + fCategory.id" :value="subCategory.id" v-model="dataFilter.category">
-                          <label :for="'filter-kategori-' + subCategory.id">{{ subCategory.name }}</label>
-                        </li>
-                      </ul>
-                    </li>
-                  </template>
+                  <li v-for="(fCategory, i) in this.vxProductCategories" :key="i">
+                    <div class="flex flex-row items-center gap-3">
+                      <input type="checkbox" class="input-checkbox" :id="'filter-kategori-' + fCategory.id" :value="fCategory.id" v-model="dataFilter.category" @change="setFilter(i)">
+                      <label :for="'filter-kategori-' + fCategory.id">{{ fCategory.name }}</label>
+                    </div>
+                    <ul v-if="fCategory.sub_category.length > 0" class="pl-6">
+                      <li class="flex flex-row items-center gap-3" v-for="(subCategory, j) in fCategory.sub_category" :key="j">
+                        <input type="checkbox" class="input-checkbox" :id="'filter-kategori-' + fCategory.id" :value="subCategory.id" v-model="dataFilter.category">
+                        <label :for="'filter-kategori-' + subCategory.id">{{ subCategory.name }}</label>
+                      </li>
+                    </ul>
+                  </li>
                 </ul>
               </div>
               <div ref="condition-section" class="accordion">
@@ -146,32 +144,30 @@
         <div id="filter" class="hidden h-full md:flex md:flex-col md:gap-2 md:w-[28%] lg:w-[30%] xl:w-[21%]">
           <div class="card w-full max-h-screen shadow-md border border-gray-200 flex flex-col py-2 px-3 transition-all duration-200 ease-in-out divide-y-2">
             <h3 class="font-medium text-lg mb-2">Filter</h3>
-            <div id="kategori-section" class="accordion">
-              <input type="checkbox" name="" id="checkbox-kategori" class="accordion-checkbox" checked>
-              <label for="checkbox-kategori" class="accordion-label relative">
+            <div id="category-section" class="accordion">
+              <input type="checkbox" name="" id="checkbox-filter-category" class="accordion-checkbox" checked>
+              <label for="checkbox-filter-category" class="accordion-label relative">
                 Kategori
                 <i class="fa-solid fa-caret-right right-0 transition duration-[250ms] ease-in-out absolute"></i>
               </label>
               <ul class="accordion-content">
-                <template v-for="(fCategory, i) in this.vxProductCategories">
-                  <li :key="i">
-                    <div class="flex flex-row items-center gap-2">
-                      <input type="checkbox" class="input-checkbox-sm lg:input-checkbox-base" :id="'filter-kategori-' + fCategory.id" :value="fCategory.id" v-model="dataFilter.category" @change="setFilter(i)">
-                      <label :for="'filter-kategori-' + fCategory.id">{{ fCategory.name }}</label>
-                    </div>
-                    <ul v-if="fCategory.sub_category.length > 0" class="pl-4 mt-1">
-                      <li class="flex flex-row items-center gap-2 mb-0.5" v-for="(subCategory, j) in fCategory.sub_category" :key="j">
-                        <input type="checkbox" class="input-checkbox-sm lg:input-checkbox-base" :id="'filter-kategori-' + subCategory.id" :value="subCategory.id" v-model="dataFilter.category">
-                        <label :for="'filter-kategori-' + subCategory.id">{{ subCategory.name }}</label>
-                      </li>
-                    </ul>
-                  </li>
-                </template>
+                <li v-for="(fCategory, i) in this.vxProductCategories" :key="i">
+                  <div class="flex flex-row items-center gap-2">
+                    <input type="checkbox" class="input-checkbox-sm lg:input-checkbox-base" :id="'filter-kategori-' + fCategory.id" :value="fCategory.id" v-model="dataFilter.category" @change="setFilter(i)">
+                    <label :for="'filter-kategori-' + fCategory.id">{{ fCategory.name }}</label>
+                  </div>
+                  <ul v-if="fCategory.sub_category.length > 0" class="pl-4 mt-1">
+                    <li class="flex flex-row items-center gap-2 mb-0.5" v-for="(subCategory, j) in fCategory.sub_category" :key="j">
+                      <input type="checkbox" class="input-checkbox-sm lg:input-checkbox-base" :id="'filter-kategori-' + subCategory.id" :value="subCategory.id" v-model="dataFilter.category">
+                      <label :for="'filter-kategori-' + subCategory.id">{{ subCategory.name }}</label>
+                    </li>
+                  </ul>
+                </li>
               </ul>
             </div>
-            <div id="kondisi-section" class="accordion">
-              <input type="checkbox" name="" id="checkbox-kondisi" class="accordion-checkbox" checked>
-              <label for="checkbox-kondisi" class="accordion-label">
+            <div id="condition-section" class="accordion">
+              <input type="checkbox" name="" id="checkbox-filter-condition" class="accordion-checkbox" checked>
+              <label for="checkbox-filter-condition" class="accordion-label">
                 Kondisi
                 <i class="fa-solid fa-caret-right transition duration-[250ms] ease-in-out"></i>
               </label>
@@ -186,9 +182,9 @@
                 </li>
               </ul>
             </div>
-            <div id="harga-section" class="accordion">
-              <input type="checkbox" name="" id="checkbox-harga" class="accordion-checkbox" checked>
-              <label for="checkbox-harga" class="accordion-label">
+            <div id="price-section" class="accordion">
+              <input type="checkbox" name="" id="checkbox-filter-price" class="accordion-checkbox" checked>
+              <label for="checkbox-filter-price" class="accordion-label">
                 Harga
                 <i class="fa-solid fa-caret-right transition duration-[250ms] ease-in-out"></i>
               </label>
@@ -243,11 +239,10 @@
                   </select>
                 </div>
               </div>
-              <div class="grid grid-flow-row grid-cols-2 gap-2 md:grid-cols-3 md:gap-2 lg:grid-cols-4 xl:grid-cols-5">
-                <GridProduct
-                  :rowdata="this.products"
-                  @detail="showProduct" />
-              </div>
+              <GridProduct
+                :divClass="'grid grid-flow-row grid-cols-2 gap-2 md:grid-cols-3 md:gap-2 lg:grid-cols-4 xl:grid-cols-5'"
+                :rowdata="this.products"
+                @detail="showProduct" />
             </template>
           </template>
         </div>
