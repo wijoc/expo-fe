@@ -204,7 +204,7 @@
 
         <div class="tab-content w-full md:w-[72%] lg:w-[70%] xl:w-[79%]">
           <div v-if="this.isLoading.product" class="grid grid-flow-row grid-cols-2 gap-2 md:grid-cols-3 md:gap-2 lg:grid-cols-4 xl:grid-cols-5">
-            <div class="bg-gray-100/60 w-full h-48 border border-gray-200 flex flex-col justify-center skeleton" v-for="i in 5" :key="i">
+            <div class="w-full h-48 border bg-gray-100/60 border-gray-200 flex flex-col justify-center skeleton" v-for="i in 5" :key="i">
               <span class="bg-gray-300 w-full h-28">
               </span>
               <div class="flex flex-col gap-[0.125rem] py-2 px-1">

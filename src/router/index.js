@@ -6,6 +6,7 @@ import ExhibitionLayout from '@/layouts/ExhibitionLayout.vue'
 import LandingView from '@/views/LandingView.vue'
 import ExhibitionView from '@/views/ExhibitionView.vue'
 import ShopView from '@/views/ShopView.vue'
+import ProductView from '@/views/ProductView.vue'
 import FaqView from '@/views/FaqView.vue'
 import RegistrationView from '@/views/RegistrationView.vue'
 import LoginView from '@/views/LoginView.vue'
@@ -32,10 +33,10 @@ const routes = [
     meta: { layout: ExhibitionLayout }
   },
   {
-    path: '/exhibition/product/:id?',
+    path: '/exhibition/product/:slug?',
     name: 'product',
-    component: ExhibitionView,
-    props: { exhibContent: 'detail-product' },
+    component: ProductView,
+    props: true,
     meta: { layout: ExhibitionLayout }
   },
   {
@@ -60,6 +61,12 @@ const routes = [
     path: '/login',
     name: 'login',
     component: LoginView
+  },
+  {
+    path: '/',
+    name: '404',
+    component: LandingView,
+    meta: { layout: LandingLayout }
   }
 ]
 

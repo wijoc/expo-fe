@@ -57,7 +57,7 @@
                 </ul>
                 <div v-show="this.isShopLocation" ref="shop-location-filter" class="hidden md:fixed md:top-[40%] md:left-5 md:w-6/12 md:h-[40%] md:flex md:flex-col md:gap-2 md:p-2 md:bg-white md:border-2 md:border-gray-300 md:rounded md:z-20 lg:left-[4.5rem] lg:w-5/12 lg:h-3/6 xl:left-24">
                   <div class="flex flex-nowrap justify-between items-center pb-2 border-b-1 border-gray-300">
-                    <h5 class="w-2/12 text-md font-medium tracking-wide uppercase">Lokasi</h5>
+                    <h5 class="w-2/12 font-medium tracking-wide uppercase">Lokasi</h5>
                     <div class="w-9/12 flex flex-nowrap justify-center items-center gap-0 rounded p-0.5 overflow-hidden relative">
                       <input type="text" class="w-full p-0.5 text-sm bg-white border-1 border-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500 rounded" placeholder="Cari Lokasi ..." v-model="searchCity">
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="max-w-4 max-h-[0.85rem] text-gray-400 fill-current absolute top-1/2 translate-y-[-50%] right-2 cursor-pointer">
@@ -74,7 +74,7 @@
                   </div>
                   <div class="flex flex-col gap-2 overflow-y-scroll overflow-x-hidden">
                     <div v-for="(value, key, i) in this.filterCities" :key="i">
-                      <h5 class="w-full text-md font-medium uppercase">{{ key }}</h5>
+                      <h5 class="w-full font-medium uppercase">{{ key }}</h5>
                       <div class="grid grid-cols-2">
                         <div class="col-span-1 flex flex-row items-center gap-2" v-for="(fCity, c) in value" :key="c">
                           <input type="checkbox" class="input-checkbox-sm lg:input-checkbox-base" :id="'filter-shop-city-' + fCity.id" :value="fCity.id" v-model="shopFilter.city">
@@ -167,10 +167,9 @@
 
             <ContentProduct
               ref="content-product"
-              :rowdata="this.productsFilteredData.rowdata"
-              :info="this.listInfo"
-              :sort.sync="this.sort"
               :keyword="this.searchTerm"
+              :filterData.sync="productFilter"
+              :filterLoading="this.isLoading.filterProduct"
               v-show="showContent === 'content-product'" />
           </div>
         </div>
@@ -220,6 +219,7 @@ export default {
         minPrice: null,
         maxPrice: null,
         condition: null,
+        city: [],
         category: []
       },
       shopFilter: {
@@ -297,65 +297,6 @@ export default {
       fiveCities: 'regions/getterFiveCity',
       alphabetCities: 'regions/getterCityByAlphabet'
     }),
-    productsFilteredData: function () {
-      if (this.productsRawData.length > 0) {
-        var filteredData = this.productsRawData.filter((prd) => {
-          /** Filter berdasar hasil filter option */
-          return prd
-        }).filter((prd) => {
-          if (prd.name.toString().toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1) {
-            return prd
-          }
-          return false
-        })
-
-        if (this.sort.by !== null && this.sort.by !== '') {
-          const sB = this.sort.by
-          const sO = this.sort.order
-
-          filteredData = filteredData.sort(function (a, b) {
-            if (a[sB] > b[sB]) {
-              return (sO === 'asc' ? 1 : -1)
-            } else if (a[sB] < b[sB]) {
-              return (sO === 'asc' ? -1 : 1)
-            }
-            return 0
-          })
-        }
-
-        if (filteredData.length > 0) {
-          var listData = {
-            filtered: filteredData.length,
-            rowdata: []
-          }
-
-          filteredData.slice(this.listInfo.row_start, this.listInfo.row_end).map((data, index) => {
-            return listData.rowdata.push({
-              identification: data.id,
-              id: data.id,
-              name: this.shortenTitle(data.name),
-              price: data.price,
-              disc_percent: data.disc_percent,
-              disc_price: data.disc_price,
-              img: data.img,
-              desc: data.description
-            })
-          })
-
-          return listData
-        } else {
-          return {
-            filtered: filteredData.length,
-            rowdata: []
-          }
-        }
-      } else {
-        return {
-          filtered: 0,
-          rowdata: []
-        }
-      }
-    },
     filterCities: function () {
       if (this.alphabetCities && this.alphabetCities.length > 0) {
         return this.alphabetCities(this.searchCity)

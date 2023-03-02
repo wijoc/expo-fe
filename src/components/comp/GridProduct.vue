@@ -1,6 +1,6 @@
 <template>
   <div :class="this.divClass">
-    <div class="content-item border border-gray-200 flex flex-col justify-center" v-for="(prd, i) in this.rowdata" :key="i" @click="showProduct(prd.uuid)">
+    <div class="content-item border border-gray-200 flex flex-col justify-center cursor-pointer hover:border-primary hover:-mt-1 transition duration-75" v-for="(prd, i) in this.rowdata" :key="i" @click="showProduct(i)">
       <span class="bg-gray-100 flex justify-center items-center w-full max-h-44">
         <img src="@/assets/img/product/product_1.jpg" alt="" class="max-w-full max-h-44">
       </span>
@@ -19,6 +19,12 @@
             {{ prd.price_initial | rupiah }}
           </p>
         </span>
+        <p class="text-xs text-left text-gray-400 mt-2">
+          <template v-if="prd.store_name">
+            <i class="fa-solid fa-shop text-primary"></i> {{ prd.store_name + ' - ' }}
+          </template>
+          {{ prd.city }}
+        </p>
       </div>
     </div>
   </div>
@@ -26,7 +32,7 @@
 
 <script>
 import * as currencyHelper from '@/helper/CurrencyHelper.js'
-import * as StringHelper from '@/helper/StringHelper.js'
+import * as stringHelper from '@/helper/StringHelper.js'
 
 export default {
   name: 'GridProduct',
@@ -38,8 +44,11 @@ export default {
     }
   },
   methods: {
-    showProduct (id) {
-      this.$emit('detail', id)
+    showProduct (rowIndex) {
+      this.$emit('detail', {
+        uuid: this.rowdata[rowIndex].uuid,
+        slug: stringHelper.createSlug(this.rowdata[rowIndex].name)
+      })
     }
   },
   filters: {
@@ -47,7 +56,7 @@ export default {
       return currencyHelper.currencyFormat(value, '.', 'Rp')
     },
     shortTitle: function (value) {
-      return StringHelper.ShortenStr(value, 15)
+      return stringHelper.shortenStr(value, 15)
     },
     disc: function (value) {
       const disc = value.split('.', value)
