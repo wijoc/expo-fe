@@ -16,9 +16,15 @@ module.exports = {
         '4.5xl': '2.75em'
       },
       colors: {
-        primary: '#ef476f',
-        darkerprimary: '#c13a59',
-        secondary: '#118ab2'
+        primary: '#84dcc6',
+        'lighter-primary': '#a5ffd6',
+        'darker-primary': '#6eaf9f',
+        secondary: '#ff686b',
+        'lighter-secondary': '#ffa69e',
+        'darker-secondary': '#cc494b',
+        tertiary: '#FF5666',
+        quartyary: '#d0e2ff',
+        'space-black': '#22223B'
       },
       letterSpacing: {
         xtrawide: '0.15em',
@@ -37,9 +43,13 @@ module.exports = {
         'maxheight': 'max-height'
       },
       keyframes: {
-        fade: {
+        'fade-in': {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' }
+        },
+        'fade-out': {
+          '100%': { opacity: '0' },
+          '0%': { opacity: '1' }
         },
         slideHeader: {
           '0%': { transform: 'translateY(-3rem)' },
@@ -49,12 +59,18 @@ module.exports = {
           '0%': { transform: 'translateY(100%)' },
           '100%': { transform: 'translateY(0)' }
         },
+        'slide-right': {
+          '100%': { transform: 'translateX(150%)' },
+          '0%': { transform: 'translateX(0%)' }
+        },
         shimmer: {
           '100%': { transform: 'translateX(100%)' }
         }
       },
       animation: {
-        headerDown: 'slideHeader 0.75s ease-in-out normal'
+        headerDown: 'slideHeader 0.75s ease-in-out normal',
+        'fade-in': 'fade-in .5s ease-in-out normal',
+        'slide-right': 'slide-right 1s linear infinite'
       }
     },
     borderWidth: {

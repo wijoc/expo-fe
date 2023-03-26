@@ -1,17 +1,17 @@
 <template>
   <div>
-    <TheHeader headerType="exhibition" />
+    <ExhibitionHeader />
     <slot />
   </div>
 </template>
 
 <script>
-import TheHeader from '@/components/visitor/TheHeader.vue'
+import ExhibitionHeader from '@/components/visitor/ExhibitionHeader.vue'
 
 export default {
-  name: 'LandingLayout',
+  name: 'ExhibitionLayout',
   components: {
-    TheHeader
+    ExhibitionHeader
   }
 }
 </script>

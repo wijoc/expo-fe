@@ -3,14 +3,6 @@
 @tailwind utilities;
 
 @layer base {
-  body {
-    background: url('@/assets/img/home-bg.jpg') no-repeat center center fixed;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-  }
-
   body::-webkit-scrollbar {
     @apply w-2;
   }
@@ -30,11 +22,11 @@
   }
 
   .header-scrolled {
-    @apply bg-sky-400/70 backdrop-blur-sm text-black transition ease-in-out duration-300;
+    @apply text-black transition duration-300 ease-in-out bg-primary backdrop-blur-sm;
   }
 
   .menu-line {
-    @apply w-7 h-[2.5px] bg-white my-1.5 block transition duration-300;
+    @apply w-7 h-[2.5px] bg-black my-1.5 block transition duration-300;
   }
 
   .menu-active > span:nth-child(1) {
@@ -49,28 +41,24 @@
     @apply rotate-[135deg] -mt-[1.05rem];
   }
 
-  .exhibition .menu-active > span:nth-child(3) {
-    @apply rotate-[135deg] -mt-[.8rem];
-  }
-
   .nav-item {
-    @apply flex justify-start py-1 px-5 border-b-1 border-gray-300 uppercase font-semibold sm:justify-center sm:px-2 sm:text-white sm:border-0 sm:font-medium sm:text-base sm:capitalize;
+    @apply flex justify-start px-5 py-1 font-semibold uppercase border-gray-300 border-b-1 sm:justify-center sm:px-2 sm:text-space-black sm:border-0 sm:font-medium sm:text-base sm:capitalize;
   }
 
   .nav-item:not(:last-child):hover, .nav-item.nav-active, .nav-item.router-link-active {
-    @apply after:absolute after:w-8 after:h-1 after:bottom-0 after:bg-primary after:mx-auto;
+    @apply after:absolute after:w-8 after:h-1 after:bottom-0 after:bg-secondary after:mx-auto;
   }
 
   .nav-item-sm {
-    @apply flex justify-start py-1 px-5 border-b-1 border-gray-300 uppercase font-semibold sm:justify-center sm:px-2 sm:py-0 sm:text-white sm:text-xs sm:border-0 sm:font-semibold sm:capitalize;
+    @apply flex justify-start px-5 py-1 font-semibold uppercase border-gray-300 border-b-1 sm:justify-center sm:px-2 sm:py-0 sm:text-space-black sm:text-xs sm:border-0 sm:font-semibold sm:capitalize;
   }
 
   .nav-item-sm:hover, .nav-item-sm.nav-active, .nav-item-sm.router-link-active {
-    @apply text-primary;
+    @apply text-secondary;
   }
 
   .text-banner {
-    @apply text-primary font-black font-inter uppercase;
+    @apply font-black uppercase text-tertiary font-inter;
     -webkit-text-stroke: 1px #ffffff;
     /* font-size: 6.4em;
     overflow-x: hidden;
@@ -78,28 +66,20 @@
   }
 
   .subtext-banner {
-    @apply	text-primary font-black tracking-superwide font-inter uppercase mx-auto pl-1 w-full;
+    @apply	w-full pl-1 mx-auto font-black uppercase text-tertiary tracking-superwide font-inter;
     /* font-size: 3.5em; */
   }
 
-  .home-text {
-    -webkit-text-stroke: 0.5px #000;
-  }
-
-  .infobox-text {
-    @apply text-6xl font-bold text-sky-500 md:text-5xl;
-  }
-
   .section-title {
-    @apply uppercase font-light text-2xl tracking-widest w-fit mr-1 h-full text-gray-400 sm:font-semibold sm:text-3xl sm:tracking-wide sm:text-black sm:w-full sm:mr-0;
+    @apply h-full mr-1 text-2xl font-light tracking-widest text-gray-400 uppercase w-fit sm:font-semibold sm:text-3xl sm:tracking-wide sm:text-black sm:w-full sm:mr-0;
   }
 
   .timeline-badge {
-    @apply bg-sky-400 border-2 border-gray-400 w-8 h-8 rounded-full py-0.5 text-center text-white font-semibold -ml-4 mr-3 sm:absolute sm:ml-3 sm:mr-0 sm:bottom-3 sm:z-10;
+    @apply bg-primary border-2 border-gray-400 w-8 h-8 rounded-full py-0.5 text-center text-secondary font-semibold -ml-4 mr-3 sm:absolute sm:ml-3 sm:mr-0 sm:bottom-3 sm:z-10;
   }
 
   .timeline-panel {
-    @apply border-1 border-primary rounded-sm ml-7 -mt-14 p-4 left-pin relative sm:mt-0 sm:ml-0 sm:bottom-pin sm:w-56 sm:h-56 md:h-[18em] md:w-[18em];
+    @apply border-1 border-tertiary rounded-sm ml-7 -mt-14 p-4 left-pin relative sm:mt-0 sm:ml-0 sm:bottom-pin sm:w-56 sm:h-56 md:h-[18em] md:w-[18em];
   }
 
   .left-pin {
@@ -111,7 +91,7 @@
   }
 
   .swiper-slide {
-    @apply p-4 w-full h-full flex items-center;
+    @apply flex items-center w-full h-full p-4;
   }
 
   .swiper-pagination > .swiper-pagination-bullet.swiper-pagination-bullet-active {
@@ -135,7 +115,7 @@
   }
 
   .accordion .accordion-label {
-    @apply flex justify-between items-center p-0 font-medium text-lg cursor-pointer;
+    @apply flex items-center justify-between p-0 text-lg font-medium cursor-pointer;
   }
 
   .accordion-content {
@@ -143,11 +123,11 @@
   }
 
   .tab-nav {
-    @apply flex flex-row justify-start items-center gap-3 px-3 border-b-2 border-gray-300;
+    @apply flex flex-row items-center justify-start gap-3 px-3 border-b-2 border-gray-300;
   }
 
   .tab-nav .tab-nav-item {
-    @apply relative flex flex-nowrap justify-center items-center gap-2 w-full p-1 font-normal text-base text-gray-400 cursor-pointer uppercase sm:justify-between sm:w-fit;
+    @apply relative flex items-center justify-center w-full gap-2 p-1 text-base font-normal text-gray-400 uppercase cursor-pointer flex-nowrap sm:justify-between sm:w-fit;
   }
 
   .tab-nav .tab-nav-item.active {
@@ -155,15 +135,15 @@
   }
 
   .tab-content {
-    @apply py-2 px-0 sm:px-1;
+    @apply px-0 py-2 sm:px-1;
   }
 
   .content-item {
-    @apply col-span-1 card shadow;
+    @apply col-span-1 shadow card;
   }
 
   .btn {
-    @apply flex flex-nowrap justify-center items-center gap-1 text-base text-justify font-bold px-2 py-1 transition duration-300 ease-in-out hover:shadow-xl;
+    @apply flex items-center justify-center gap-1 px-2 py-1 text-base font-bold text-justify transition duration-300 ease-in-out flex-nowrap hover:shadow-xl;
   }
 
   .btn-sm {
@@ -179,51 +159,47 @@
   }
 
   .btn-lg {
-    @apply px-6 py-4 sm:py-2 md:py-4 text-lg;
+    @apply px-6 py-4 text-lg sm:py-2 md:py-4;
   }
 
   .btn-disabled {
-    @apply bg-gray-300 text-gray-500 cursor-not-allowed hover:shadow-none;
+    @apply text-gray-500 bg-gray-300 cursor-not-allowed hover:shadow-none;
   }
 
   .btn-primary {
-    @apply text-white bg-primary hover:bg-darkerprimary;
+    @apply text-white bg-lighter-primary hover:bg-primary;
   }
 
   .btn-secondary {
-    @apply text-white bg-sky-500 hover:bg-sky-600;
+    @apply text-white bg-secondary hover:bg-darker-secondary;
+  }
+
+  .btn-tertiary {
+    @apply text-white bg-tertiary hover:bg-darker-secondary;
   }
 
   .btn-outline-primary {
-    @apply bg-transparent border-1 border-primary text-primary hover:bg-primary hover:text-white hover:border-white transition-colors duration-150;
+    @apply transition-colors duration-150 bg-transparent border-1 border-primary text-primary hover:bg-primary hover:text-white hover:border-white;
   }
 
   .btn-outline-secondary {
-    @apply bg-transparent border-1 border-sky-300 text-sky-300 hover:bg-sky-300 hover:text-white hover:border-white transition-colors duration-150;
+    @apply transition-colors duration-150 bg-transparent border-1 border-secondary text-secondary hover:bg-tertiary hover:text-white hover:border-white;
   }
 
   .btn-outline-gray {
-    @apply bg-transparent border-1 border-gray-500 text-gray-500 hover:bg-sky-100/20 transition-colors duration-150;
+    @apply text-gray-500 transition-colors duration-150 bg-transparent border-gray-500 border-1 hover:bg-sky-100/20;
   }
 
   .btn-outline-green {
-    @apply bg-transparent border-1 border-green-400 text-green-400 hover:bg-green-300 hover:text-white hover:border-white transition-colors duration-150;
-  }
-
-  .border-gradient-to-br {
-    @apply bg-gradient-to-br	from-primary to-secondary;
-  }
-
-  .border-gradient-to-r {
-    @apply bg-gradient-to-r	from-primary to-secondary;
+    @apply text-green-400 transition-colors duration-150 bg-transparent border-green-400 border-1 hover:bg-green-300 hover:text-white hover:border-white;
   }
 
   .card {
-    @apply bg-white rounded-md overflow-hidden;
+    @apply overflow-hidden bg-white rounded-md;
   }
 
   .card-header {
-    @apply bg-gray-200 top-0 px-3 py-1 border-b-1 border-gray-300;
+    @apply top-0 px-3 py-1 bg-gray-200 border-gray-300 border-b-1;
   }
 
   .card-body {
@@ -231,7 +207,7 @@
   }
 
   .card-footer {
-    @apply bg-gray-200 bottom-0 px-3 py-1 border-t-1 border-gray-300;
+    @apply bottom-0 px-3 py-1 bg-gray-200 border-gray-300 border-t-1;
   }
 
   .card-outline-header {
@@ -239,11 +215,11 @@
   }
 
   .form-label {
-    @apply block font-medium text-black mb-1;
+    @apply block mb-1 font-medium text-black;
   }
 
   .form-control {
-    @apply font-normal border border-gray-300 shadow bg-white placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500;
+    @apply font-normal bg-white border border-gray-300 shadow placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500;
   }
 
   .form-control.form-control-xs {
@@ -251,11 +227,11 @@
   }
 
   .form-control.form-control-sm {
-    @apply text-sm leading-3 px-2 py-1;
+    @apply px-2 py-1 text-sm leading-3;
   }
 
   .form-control-base {
-    @apply text-base leading-5 px-3 py-2;
+    @apply px-3 py-2 text-base leading-5;
   }
 
   .form-control-md {
@@ -263,7 +239,7 @@
   }
 
   .form-control.form-control-lg {
-    @apply text-base leading-5 px-4 py-3;
+    @apply px-4 py-3 text-base leading-5;
   }
 
   .form-floating label:has(+ input:focus-within), .form-floating label:has(+ input:not(:placeholder-shown)) {
@@ -279,11 +255,11 @@
   }
 
   .form-floating .form-control {
-    @apply block w-full h-12 text-base border border-gray-400 ring-gray-400 shadow rounded px-3 pt-2 pb-0 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500;
+    @apply block w-full h-12 px-3 pt-2 pb-0 text-base border border-gray-400 rounded shadow ring-gray-400 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500;
   }
 
   .form-floating textarea.form-control-ta {
-    @apply block w-full text-base border border-gray-400 ring-gray-400 shadow rounded px-3 pt-4 pb-0 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500;
+    @apply block w-full px-3 pt-4 pb-0 text-base border border-gray-400 rounded shadow ring-gray-400 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500;
   }
 
   .input-group {
@@ -355,20 +331,23 @@
   }
 
   .table-bordered, .table-bordered th, .table-bordered tr, .table-bordered td {
-    @apply border-1 border-black;
+    @apply border-black border-1;
     border-collapse: collapse;
   }
 
   .table-bordered-b th, .table-bordered-b tr, .table-bordered-b td {
-    @apply border-b-1 border-black;
+    @apply border-black border-b-1;
     border-collapse: collapse;
   }
 
   .title-product {
-    @apply uppercase font-light text-sm text-justify;
+    @apply text-sm font-light text-justify uppercase;
   }
 
   .skeleton {
     @apply relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:bg-gradient-to-r before:from-transparent before:via-white/60 before:animate-[shimmer_1.5s_infinite];
   }
+}
+
+@layer utilities {
 }
