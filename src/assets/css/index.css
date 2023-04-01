@@ -115,7 +115,7 @@
   }
 
   .accordion .accordion-label {
-    @apply flex items-center justify-between p-0 text-lg font-medium cursor-pointer;
+    @apply flex items-center justify-between p-0 font-[450];
   }
 
   .accordion-content {
@@ -131,7 +131,7 @@
   }
 
   .tab-nav .tab-nav-item.active {
-    @apply text-primary after:absolute after:w-full after:h-1 after:left-0 after:-bottom-0.5 after:bg-primary;
+    @apply text-secondary after:absolute after:w-full after:h-1 after:left-0 after:-bottom-0.5 after:bg-secondary;
   }
 
   .tab-content {
@@ -299,15 +299,27 @@
   }
 
   .input-checkbox + label, .input-radio + label {
-    @apply text-lg font-light tracking-wider;
+    @apply text-lg font-light tracking-wider cursor-pointer;
   }
 
   .input-checkbox-base + label, .input-radio-base + label {
-    @apply text-base font-light tracking-wider;
+    @apply text-base font-light tracking-wider cursor-pointer;
   }
 
   .input-checkbox-sm + label, .input-radio-sm + label {
-    @apply text-sm font-light tracking-wider;
+    @apply text-sm font-light tracking-wider cursor-pointer;
+  }
+
+  .radio-tag {
+    @apply absolute opacity-0 -z-10;
+  }
+
+  .radio-tag + label {
+    @apply px-3 py-1.5 text-base font-medium border-2 rounded-md bg-gray-100/50 border-gray-400 text-gray-400;
+  }
+
+  .radio-tag:checked + label {
+    @apply text-space-black border-space-black bg-primary;
   }
 
   .scrollbar::-webkit-scrollbar-track {

@@ -10,6 +10,7 @@ import ProductView from '@/views/ProductView.vue'
 import FaqView from '@/views/FaqView.vue'
 import RegistrationView from '@/views/RegistrationView.vue'
 import LoginView from '@/views/LoginView.vue'
+import ErrorView from '@/views/error/ErrorView.vue'
 
 Vue.use(VueRouter)
 
@@ -21,9 +22,32 @@ const routes = [
     meta: { layout: LandingLayout }
   },
   {
+    path: '/server-error',
+    name: 'server-error',
+    component: ErrorView,
+    meta: { layout: LandingLayout }
+  },
+  {
+    path: '/page-not-found',
+    name: 'page-not-found',
+    component: ErrorView,
+    meta: { layout: ExhibitionLayout }
+  },
+  {
+    path: '/registration',
+    name: 'registration',
+    component: RegistrationView
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: LoginView
+  },
+  {
     path: '/exhibition',
     name: 'exhibition',
     component: ExhibitionView,
+    props: { shopsearch: false },
     meta: { layout: ExhibitionLayout }
   },
   {
@@ -40,11 +64,17 @@ const routes = [
     meta: { layout: ExhibitionLayout }
   },
   {
-    path: '/faq/:id?',
+    path: '/faq',
     name: 'faq',
     component: FaqView,
     meta: { layout: LandingLayout }
   },
+  {
+    path: '/faq/:id?',
+    name: 'faq-detail',
+    component: FaqView,
+    meta: { layout: LandingLayout }
+  }
   // {
   //   path: '/faq/question/:id?',
   //   name: 'faq',
@@ -52,22 +82,6 @@ const routes = [
   //   props: { content: 'question-detail' },
   //   meta: { layout: LandingLayout }
   // },
-  {
-    path: '/registration',
-    name: 'registration',
-    component: RegistrationView
-  },
-  {
-    path: '/login',
-    name: 'login',
-    component: LoginView
-  },
-  {
-    path: '/',
-    name: '404',
-    component: LandingView,
-    meta: { layout: LandingLayout }
-  }
 ]
 
 const router = new VueRouter({

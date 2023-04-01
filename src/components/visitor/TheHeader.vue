@@ -1,5 +1,5 @@
 <template>
-  <header id="header" ref="header" class="z-50 fixed w-full py-0.5 transition-all duration-200 sm:max-h-9 sm:top-5 lg:px-[4.5rem] xl:px-[5.5rem]">
+  <header id="header" ref="header" class="z-50 fixed w-full py-0.5 transition-all duration-200 sm:max-h-9 sm:top-0 lg:px-[4.5rem] xl:px-[5.5rem]">
     <div class="container">
       <div class="relative flex flex-row items-center justify-between w-full flex-nowrap">
         <router-link class="flex flex-row items-center justify-between flex-nowrap sm:max-w-[25%]" to="/">
@@ -37,7 +37,7 @@
         </div>
       </div>
     </div>
-    <div id="menu-item" ref="menu-item" class="absolute flex flex-col w-full h-screen transition-all duration-200 translate-y-full bg-white/30 backdrop-blur-[2px] top-8 pt-6 px-2 sm:hidden">
+    <div id="menu-item" ref="menu-item" class="fixed flex flex-col w-full h-screen transition-all duration-200 translate-y-full bg-white/30 backdrop-blur-[2px] top-8 pt-6 px-2 sm:hidden">
       <div class="flex flex-col justify-start min-h-full gap-2 px-2 pt-3 pb-1 bg-white border-2 border-gray-400 rounded-t-md sm:hidden">
         <div class="grid grid-cols-3 gap-2">
           <div class="cursor-pointer flex flex-col items-center justify-center col-span-1 py-2.5 bg-white border-gray-200 rounded border-1">

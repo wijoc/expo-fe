@@ -4,104 +4,171 @@ import * as axConfig from '@/config.js'
 const namespaced = true
 
 const state = {
-  vxProvince: [],
-  provLastRequest: null,
-  vxCities: [],
-  cityLastRequest: null,
-  vxDistrict: [],
-  districtLastRequest: null
+  vxProvinces: {},
+  verrProvinces: {
+    error: false,
+    code: null
+  },
+  vxCities: {},
+  verrCities: {
+    error: false,
+    code: null
+  },
+  vxDistricts: {},
+  verrDistricts: {
+    error: false,
+    code: null
+  }
 }
 
 const mutations = {
-  setProvince (state, payload) {
-    state.vxProvince = payload
+  setProvinces (state, payload) {
+    state.vxProvinces = payload
   },
-  setProvLastRequest (state, payload) {
-    state.provLastRequest = payload
+  setProvincesError (state, payload) {
+    state.verrProvinces = payload
   },
-  setCity (state, payload) {
+  setCities (state, payload) {
     state.vxCities = payload
   },
-  setCityLastRequest (state, payload) {
-    state.cityLastRequest = payload
+  setCitiesError (state, payload) {
+    state.verrCities = payload
   },
-  setDistrict (state, payload) {
+  setDistricts (state, payload) {
     state.vxDistrict = payload
   },
-  setDistrictLastRequest (state, payload) {
-    state.districtLastRequest = payload
+  setDistrictsError (state, payload) {
+    state.verrDistricts = payload
   }
 }
 
 const actions = {
   async getProvinces ({ commit }, payload) {
-    var province = await axios.get(axConfig.provincesUrl, {
-      params: {
-        search: payload.search ? payload.search : null
-      }
-    })
-      .then((response) => {
-        return response.data.data
-      })
-      .catch(() => {
-        return null
-      })
+    const lsData = checkLS('ls-province')
 
-    commit('setProvince', province)
-    commit('setProvLastRequest', new Date())
+    if (lsData) {
+      commit('setProvinces', lsData.data)
+      commit('setProvincesError', { error: false, code: 0 })
+    } else {
+      try {
+        var response = await axios.get(axConfig.provinceUrl, {
+          params: {
+            search: payload.search || null,
+            order: payload.order ?? 'asc'
+          }
+        })
+
+        // Cache to localStorage
+        if (response.data.success && response.data.count_data > 0) {
+          const cacheData = {
+            data: response.data,
+            expired: new Date().getTime() + (1000 * 60 * 60) // 60 minutes from now
+          }
+
+          localStorage.setItem('ls-province', JSON.stringify(cacheData))
+        }
+
+        commit('setProvinces', response.data)
+        commit('setProvincesError', { error: false, code: 0 })
+      } catch (err) {
+        commit('setProvinces', null)
+
+        if (err.response) {
+          commit('setProvincesError', { error: true, code: err.response.status })
+        } else if (err.code === 'ERR_NETWORK') {
+          commit('setProvincesError', { error: true, code: 'ERR_NETWORK' })
+        } else {
+          commit('setProvincesError', { error: true, code: err.code })
+        }
+      }
+    }
   },
   async getCities ({ commit }, payload) {
-    var city = await axios.get(axConfig.cityUrl, {
-      params: {
-        search: payload.search ? payload.search : null,
-        province: payload.province ? payload.province : null
-      }
-    })
-      .then((response) => {
-        return response.data.data
-      })
-      .catch(() => {
-        return null
-      })
+    const lsData = checkLS('ls-city')
 
-    commit('setCity', city)
-    commit('setCityLastRequest', new Date())
+    if (lsData) {
+      commit('setCities', lsData.data)
+      commit('setCitiesError', { error: false, code: 0 })
+    } else {
+      try {
+        const response = await axios.get(axConfig.cityUrl, {
+          params: {
+            search: payload.search ? payload.search : null,
+            province: payload.province ? payload.province : null
+          }
+        })
+
+        // Cache to localStorage
+        if (response.data.success && response.data.count_data > 0) {
+          const cacheData = {
+            data: response.data,
+            expired: new Date().getTime() + (1000 * 60 * 60) // 60 minutes from now
+          }
+
+          localStorage.setItem('ls-city', JSON.stringify(cacheData))
+        }
+
+        commit('setCities', response.data)
+        commit('setCitiesError', { error: false, code: 0 })
+      } catch (err) {
+        commit('setCities', null)
+
+        if (err.response) {
+          commit('setCitiesError', { error: true, code: err.response.status })
+        } else if (err.code === 'ERR_NETWORK') {
+          commit('setCitiesError', { error: true, code: 'ERR_NETWORK' })
+        } else {
+          commit('setCitiesError', { error: true, code: err.code })
+        }
+      }
+    }
   },
   async getDistricts ({ commit }, payload) {
-    var district = await axios.get(axConfig.districtUrl, {
-      params: {
-        search: payload.search ? payload.search : null,
-        prent: payload.parent_id ? payload.parent_id : null
-      }
-    })
-      .then((response) => {
-        return response.data.data
-      })
-      .catch(() => {
-        return null
-      })
+    const lsData = checkLS('ls-district')
 
-    commit('setDistrict', district)
-    commit('setDistrictLastRequest', new Date())
+    if (lsData) {
+      commit('setDistricts', lsData.data)
+      commit('setDistrictsError', { error: false, code: 0 })
+    } else {
+      try {
+        const response = await axios.get(axConfig.districtUrl, {
+          params: {
+            search: payload.search ? payload.search : null,
+            prent: payload.parent_id ? payload.parent_id : null
+          }
+        })
+
+        // Cache to localStorage
+        if (response.data.success && response.data.count_data > 0) {
+          const cacheData = {
+            data: response.data,
+            expired: new Date().getTime() + (1000 * 60 * 30) // 30 minutes from now
+          }
+
+          localStorage.setItem('ls-district', JSON.stringify(cacheData))
+        }
+
+        commit('setDistricts', response.data)
+        commit('setDistrictsError', { error: false, code: 0 })
+      } catch (err) {
+        commit('setDistricts', null)
+
+        if (err.response) {
+          commit('setDistrictsError', { error: true, code: err.response.status })
+        } else if (err.code === 'ERR_NETWORK') {
+          commit('setDistrictsError', { error: true, code: 'ERR_NETWORK' })
+        } else {
+          commit('setDistrictsError', { error: true, code: err.code })
+        }
+      }
+    }
   }
 }
 
 const getters = {
-  getterFiveCity: (state) => {
-    if (state.vxCities && state.vxCities.length > 0) {
-      var fiveCity = []
-      for (let i = 0; i < 5; i++) {
-        fiveCity.push(state.vxCities[Math.floor(Math.random() * state.vxCities.length)])
-      }
-
-      return fiveCity
-    } else {
-      return []
-    }
-  },
-  getterCityByAlphabet: (state) => (keyword) => {
-    if (state.vxCities && state.vxCities.length > 0) {
-      var filteredCities = state.vxCities.filter((element) => {
+  getterCitiesAlphabet: (state) => (keyword) => {
+    if (state.vxCities && state.vxCities.count_data > 0) {
+      var filteredCities = state.vxCities.data.filter((element) => {
         if (element.city.toString().toLowerCase().indexOf(keyword.toString().toLowerCase()) > -1) {
           return element
         }
@@ -109,7 +176,6 @@ const getters = {
       })
       var newCities = {}
 
-      // state.vxCities.forEach((element) => {
       filteredCities.forEach((element) => {
         const firstLetter = element.city.replace('Kab. ', '').substr(0, 1)
         if (newCities[firstLetter]) {
@@ -124,6 +190,75 @@ const getters = {
     } else {
       return []
     }
+  },
+  getterCitiesMetropolitan: (state) => () => {
+    if (state.vxCities && state.vxCities.count_data > 0) {
+      var popular = [
+        {
+          id: [],
+          city: 'Jabodetabek',
+          special: true
+        },
+        {
+          id: [],
+          city: 'DKI Jakarta',
+          special: true
+        },
+        {
+          id: [],
+          city: 'DI Yogyakarta',
+          special: true
+        }
+      ]
+
+      var jabodetabek = ['Jakarta', 'Bogor', 'Depok', 'Tangerang', 'Bekasi']
+      var diy = ['Yogyakarta', 'Bantul', 'Sleman', 'Gunungkidul', 'Gunung Kidul', 'Kulonprogo', 'Kulon Progo']
+      var metropolitan = ['Medan', 'Palembang', 'Bandung', 'Semarang', 'Surabaya', 'Denpasar', 'Banjarmasin', 'Makassar', 'Manado', 'Kab. Manokwari', 'Sorong']
+
+      state.vxCities.data.filter((element) => {
+        if (metropolitan.toString().toLowerCase().indexOf(element.city.toString().toLowerCase()) > -1) {
+          popular.push(element)
+          return element
+        }
+
+        jabodetabek.forEach((keyword) => {
+          if (element.city.toString().toLowerCase().includes(keyword.toString().toLowerCase())) {
+            popular[0].id.push(element.id)
+          }
+        })
+
+        diy.forEach((keyword) => {
+          if (element.city.toString().toLowerCase().includes(keyword.toString().toLowerCase())) {
+            popular[2].id.push(element.id)
+          }
+        })
+
+        if (element.city.toString().toLowerCase().includes('jakarta') || element.city.toString().toLowerCase().includes('kepulauan seribu')) {
+          popular[1].id.push(element.id)
+        }
+
+        return false
+      })
+
+      return popular
+    } else {
+      return []
+    }
+  }
+}
+
+const checkLS = (key) => {
+  // var now = new Date()
+  if (localStorage.getItem(key)) {
+    const lsValue = JSON.parse(localStorage.getItem(key))
+
+    if (new Date().getTime() > lsValue.expired) {
+      return lsValue
+    } else {
+      return false
+    }
+  } else {
+    return false
   }
 }
 

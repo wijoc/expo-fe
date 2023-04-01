@@ -1,5 +1,5 @@
 <template>
-  <header id="exhibition-bar" ref="exhibition-bar" class="flex flex-row justify-center items-center gap-2 px-1.5 fixed w-full z-50 bg-white sm:top-5 sm:px-8 md:px-6 lg:px-[4.5rem] xl:px-[5.5rem]">
+  <div id="exhibition-bar" ref="exhibition-bar" class="flex flex-row justify-center items-center gap-2 px-1.5 fixed w-full z-50 bg-white sm:top-5 sm:px-8 md:px-6 lg:px-[4.5rem] xl:px-[5.5rem]">
     <router-link class="hidden sm:flex sm:flex-row sm:flex-nowrap sm:justify-start sm:items-center sm:w-full sm:max-w-[22%] md:max-w-[20%] lg:max-w-[16.3%] xl:max-w-[13%] 2xl:max-w-[12%]" to="/">
       <img src="@/assets/img/Logo.png" alt="UKM Virtual Expo Logo" class="w-7 h-7">
       <span id="brand" class="ml-1 text-lg font-semibold text-black uppercase whitespace-nowrap">UMKM Expo</span>
@@ -18,7 +18,6 @@
       </div>
     </div>
     <button class="btn btn-normal hover:bg-gray-200">
-      <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="w-5 h-5 text-gray-400 fill-current"> -->
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="w-5 h-5 text-gray-500 fill-current">
         <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
         <path d="M24 0C10.7 0 0 10.7 0 24S10.7 48 24 48H76.1l60.3 316.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24-10.7 24-24s-10.7-24-24-24H179.9l-9.1-48h317c14.3 0 26.9-9.5 30.8-23.3l54-192C578.3 52.3 563 32 541.8 32H122l-2.4-12.5C117.4 8.2 107.5 0 96 0H24zM176 512c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm336-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48z"/>
@@ -105,7 +104,7 @@
         </ul>
       </div>
     </div>
-  </header>
+  </div>
 </template>
 
 <script>
@@ -129,15 +128,15 @@ export default {
   methods: {
     windowScrolled () {
       if (window.scrollY > 45) {
-        // this.$refs['exhibition-nav'].classList.add('z-50')
-        // this.$refs['exhibition-nav'].classList.add('bg-white')
-        this.$refs['exhibition-nav'].classList.add('animate-headerDown')
-        this.$refs['exhibition-nav'].classList.add('shadow-xl')
+        // this.$refs['exhibition-bar'].classList.add('z-50')
+        // this.$refs['exhibition-bar'].classList.add('bg-white')
+        this.$refs['exhibition-bar'].classList.add('animate-headerDown')
+        this.$refs['exhibition-bar'].classList.add('shadow-xl')
       } else {
-        // this.$refs['exhibition-nav'].classList.remove('z-50')
-        // this.$refs['exhibition-nav'].classList.remove('bg-white')
-        this.$refs['exhibition-nav'].classList.remove('animate-headerDown')
-        this.$refs['exhibition-nav'].classList.remove('shadow-xl')
+        // this.$refs['exhibition-bar'].classList.remove('z-50')
+        // this.$refs['exhibition-bar'].classList.remove('bg-white')
+        this.$refs['exhibition-bar'].classList.remove('animate-headerDown')
+        this.$refs['exhibition-bar'].classList.remove('shadow-xl')
       }
     },
     menuClicked () {

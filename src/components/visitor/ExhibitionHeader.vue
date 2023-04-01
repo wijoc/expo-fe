@@ -1,5 +1,5 @@
 <template>
-  <header id="header" ref="header" class="fixed hidden bg-primary top-0 left-0 w-full py-0.5 z-10 transition-all duration-200 sm:flex sm:max-h-6">
+  <header id="header" ref="header" class="hidden bg-primary top-0 left-0 w-full py-0.5 z-10 transition-all duration-200 sm:fixed sm:flex sm:max-h-6">
     <div class="container">
       <div class="relative flex flex-row items-center justify-end w-full flex-nowrap">
         <nav class="hidden sm:relative sm:flex sm:flex-row sm:items-center">

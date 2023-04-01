@@ -275,7 +275,7 @@
                 <path d="M400 32H48A48 48 0 0 0 0 80v352a48 48 0 0 0 48 48h137.25V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.27c-30.81 0-40.42 19.12-40.42 38.73V256h68.78l-11 71.69h-57.78V480H400a48 48 0 0 0 48-48V80a48 48 0 0 0-48-48z"/>
               </svg>
               <span class="pl-3 ml-3 text-xl font-medium border-l-2 border-gray-300 sm:border-0 sm:text-base sm:ml-0 sm:pl-0">
-                Halaman Youtube
+                Halaman Facebook
               </span>
             </a>
             <a href="https://www.twitter.com/" target="_blank" class="flex flex-wrap items-center p-2 mb-3 border-2 rounded-md border-primary sm:flex-col sm:col-span-1 sm:row-span-1 sm:justify-center sm:py-3">
