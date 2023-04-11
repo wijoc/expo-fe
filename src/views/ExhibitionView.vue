@@ -113,6 +113,33 @@
               </template>
             </div>
             <div v-if="this.showContent === 'content-product'">
+              <div id="m-product-sort" class="accordion">
+                <label for="ms-checkbox-sort" class="mb-2 accordion-label">
+                  Urutkan
+                </label>
+                <ul class="flex flex-row flex-wrap gap-x-2 gap-y-4">
+                  <li class="relative">
+                    <input type="radio" class="radio-tag" name="mp-checkbox-sort" id="mp-sort-relevant" value="relevant" v-model="productSort.selected">
+                    <label for="mp-sort-relevant">Paling Sesuai</label>
+                  </li>
+                  <li class="relative">
+                    <input type="radio" class="radio-tag" name="mp-checkbox-sort" id="mp-sort-name-asc" value="name-asc" v-model="productSort.selected">
+                    <label for="mp-sort-name-asc">Nama A->Z</label>
+                  </li>
+                  <li class="relative">
+                    <input type="radio" class="radio-tag" name="mp-checkbox-sort" id="mp-sort-name-desc" value="name-desc" v-model="productSort.selected">
+                    <label for="mp-sort-name-desc">Nama Z->A</label>
+                  </li>
+                  <li class="relative">
+                    <input type="radio" class="radio-tag" name="mp-checkbox-sort" id="mp-sort-price-asc" value="price-asc" v-model="productSort.selected">
+                    <label for="mp-sort-price-asc">Harga Terendah</label>
+                  </li>
+                  <li class="relative">
+                    <input type="radio" class="radio-tag" name="mp-checkbox-sort" id="mp-sort-price-desc" value="price-desc" v-model="productSort.selected">
+                    <label for="mp-sort-price-desc">Harga Tertinggi</label>
+                  </li>
+                </ul>
+              </div>
               <div id="m-product-category-filter" ref="category-filter" class="accordion">
                 <input type="checkbox" id="mp-checkbox-category" class="accordion-checkbox" checked>
                 <label for="mp-checkbox-category" class="relative accordion-label">
@@ -406,7 +433,7 @@
         <div class="tab-content">
           <ContentShop
             ref="content-shop"
-            :keyword="this.searchTerm"
+            :keyword="this.$route.query.s"
             :sortData.sync="shopSort"
             :filterData="this.shopFilter"
             :filterLoading="this.isLoading.filterShop"
@@ -415,7 +442,7 @@
 
           <ContentProduct
             ref="content-product"
-            :keyword="this.searchTerm"
+            :keyword="this.$route.query.s"
             :sortData.sync="productSort"
             :filterData.sync="productFilter"
             :filterLoading="this.isLoading.filterProduct"
@@ -442,7 +469,6 @@ export default {
   data () {
     return {
       showContent: 'content-shop',
-      searchTerm: '',
       searchLoc: '',
       isLoading: {
         filterShop: false,
@@ -477,6 +503,7 @@ export default {
       showLocationFilter: false
     }
   },
+  props: {},
   methods: {
     ...mapActions({
       getProductCtgrs: 'categories/getProductCategories',
@@ -492,9 +519,11 @@ export default {
 
       if (this.verrProductCtgrs.error || this.verrShopCtgrs.error || this.verrCities.error || this.verrProvinces.error) {
         if (this.verrProductCtgrs.code === 'ERR_NETWORK' || this.verrShopCtgrs.code === 'ERR_NETWORK' || this.verrCities.code === 'ERR_NETWORK' || this.verrProvinces.code === 'ERR_NETWORK') {
-          this.$router.push({ name: 'server-error', props: { statusCode: 500, message: 'Kami sedang offline', subMessage: 'Silahkan coba kembali setelah beberapa saat.</br>Hubungi kontak dibawah jika halaman masih tidak bisa diakses.' } })
+          console.log('a')
+          // this.$router.push({ name: 'server-error', props: { statusCode: 500, message: 'Kami sedang offline', subMessage: 'Silahkan coba kembali setelah beberapa saat.</br>Hubungi kontak dibawah jika halaman masih tidak bisa diakses.' } })
         } else {
-          this.$router.push({ name: 'server-error', props: { statusCode: 500, message: 'Halaman Rusak. Coba lagi nanti', subMessage: 'Hubungi kontak dibawah jika halaman masih tidak bisa diakses.' } })
+          console.log('a')
+          // this.$router.push({ name: 'server-error', props: { statusCode: 500, message: 'Halaman Rusak. Coba lagi nanti', subMessage: 'Hubungi kontak dibawah jika halaman masih tidak bisa diakses.' } })
         }
       } else {
         this.isLoading.filterLocation = false

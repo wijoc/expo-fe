@@ -114,44 +114,53 @@ export default {
       this.$emit('toggleFilter', true)
     },
     async getProductList () {
-      this.isLoading = true
-      try {
-        const response = await axios.get(axConfig.productUrl, {
-          params: {
-            search: this.keyword,
-            sort: this.sort.by,
-            order: this.sort.order,
-            page: this.requestPage,
-            per_page: this.requestPerPage,
-            min_price: this.filterData.minPrice,
-            max_price: this.filterData.maxPrice,
-            condition: this.filterData.condition,
-            city: this.filterData.city,
-            category: this.filterData.category
+      if (this.filterLoading) {
+        console.log('sLoading')
+        this.isLoading = true
+      } else {
+        console.log('getprod')
+        this.isLoading = true
+        try {
+          const response = await axios.get(axConfig.productUrl, {
+            headers: axConfig.getHeaders({ 'Content-type': 'application/json' }),
+            params: {
+              search: this.keyword,
+              sort: this.sort.by,
+              order: this.sort.order,
+              page: this.requestPage,
+              per_page: this.requestPerPage,
+              min_price: this.filterData.minPrice,
+              max_price: this.filterData.maxPrice,
+              condition: this.filterData.condition,
+              city: this.filterData.city,
+              category: this.filterData.category
+            }
+          })
+
+          this.info.count_all = response.data.count_all
+          this.info.count_data = response.data.count_data
+          this.info.row_per_page = response.data.row_per_page || this.requestPerPage
+          this.rawdata = response.data.data
+
+          if (this.info.active_page > 1) {
+            var pageBefore = this.info.active_page - 1
+            this.info.row_start = (pageBefore * this.info.row_per_page)
+          } else {
+            this.info.row_start = 1
           }
-        })
 
-        this.info.count_all = response.data.count_all
-        this.info.count_data = response.data.count_data
-        this.info.row_per_page = response.data.row_per_page
-        this.rawdata = response.data.data
+          var rowEnd = this.info.row_start + this.info.row_per_page
+          this.info.row_end = (rowEnd > this.info.count_all ? this.info.count_all : rowEnd)
 
-        if (this.info.active_page > 1) {
-          var pageBefore = this.info.active_page - 1
-          this.info.row_start = (pageBefore * this.info.row_per_page)
-        } else {
-          this.info.row_start = 1
-        }
-
-        var rowEnd = this.info.row_start + this.info.row_per_page
-        this.info.row_end = (rowEnd > this.info.count_all ? this.info.count_all : rowEnd)
-
-        this.isLoading = false
-      } catch (err) {
-        if (err.code === 'ERR_NETWORK') {
-          this.$router.push({ name: 'server-error', props: { statusCode: 500, message: 'Kami sedang offline', subMessage: 'Silahkan coba kembali setelah beberapa saat.</br>Hubungi kontak dibawah jika halaman masih tidak bisa diakses.' } })
-        } else {
-          this.$router.push({ name: 'server-error', props: { statusCode: 500, message: 'Halaman Rusak. Coba lagi nanti', subMessage: 'Hubungi kontak dibawah jika halaman masih tidak bisa diakses.' } })
+          this.isLoading = false
+        } catch (err) {
+          if (err.code === 'ERR_NETWORK') {
+            console.log('cp-a')
+            // this.$router.push({ name: 'server-error', props: { statusCode: 500, message: 'Kami sedang offline', subMessage: 'Silahkan coba kembali setelah beberapa saat.</br>Hubungi kontak dibawah jika halaman masih tidak bisa diakses.' } })
+          } else {
+            console.log('cp-b')
+            // this.$router.push({ name: 'server-error', props: { statusCode: 500, message: 'Halaman Rusak. Coba lagi nanti', subMessage: 'Hubungi kontak dibawah jika halaman masih tidak bisa diakses.' } })
+          }
         }
       }
     },
@@ -169,19 +178,20 @@ export default {
   watch: {
     keyword: {
       handler: function (newValue) {
-        this.getShopList()
+        this.getProductList()
+        console.log(newValue)
       }
     },
     filterData: {
       deep: true,
       handler: function (newValue) {
-        this.getShopList()
+        this.getProductList()
       }
     },
     sortData: {
       deep: true,
       handler: function (newValue) {
-        this.getShopList()
+        this.getProductList()
       }
     }
   },

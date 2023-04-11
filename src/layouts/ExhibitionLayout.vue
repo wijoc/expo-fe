@@ -3,7 +3,8 @@
     <ExhibitionHeader />
     <SearchBar
       :shopSearch="this.shopsearch"
-      :search.sync="searchTerm" />
+      :search.sync="searchKeyword"
+      @set="setSearch($event)" />
     <slot />
   </div>
 </template>
@@ -20,7 +21,7 @@ export default {
   },
   data () {
     return {
-      searchTerm: ''
+      searchKeyword: ''
     }
   },
   props: {
@@ -30,6 +31,18 @@ export default {
         return false
       }
     }
+  },
+  methods: {
+    setSearch () {
+      if (this.searchKeyword !== this.$route.query.s && encodeURIComponent(this.searchKeyword) !== this.$route.query.s) {
+        /** Both of this won't refresh page */
+        // history.pushState({ s: this.searchKeyword }, null, this.$route.path + '?' + encodeURIComponent('s') + '=' + encodeURIComponent(this.searchKeyword))
+        this.$router.push({ props: { searchTerm: this.searchKeyword }, query: { s: this.searchKeyword } })
+      }
+    }
+  },
+  created () {
+    this.searchKeyword = this.$route.query.s
   }
 }
 </script>

@@ -42,6 +42,7 @@ const actions = {
     } else {
       try {
         const response = await axios.get(axConfig.productCategoryUrl, {
+          headers: axConfig.getHeaders({ 'Content-type': 'application/json' }),
           params: {
             search: payload.search ? payload.search : null,
             prent: payload.parent_id ? payload.parent_id : null
@@ -82,6 +83,7 @@ const actions = {
     } else {
       try {
         const response = await axios.get(axConfig.productCategoryUrl, {
+          headers: axConfig.getHeaders({ 'Content-type': 'application/json' }),
           params: {
             search: payload.search ? payload.search : null,
             prent: payload.parent_id ? payload.parent_id : null

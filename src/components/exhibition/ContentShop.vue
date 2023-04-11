@@ -11,10 +11,6 @@
           <i class="fa-solid fa-filter"></i>
           Filter
         </button>
-        <button class="rounded-md btn btn-outline-gray">
-          <i class="fa-solid fa-arrow-up-short-wide"></i>
-          Sort
-        </button>
       </template>
     </div>
 
@@ -32,11 +28,10 @@
     <template v-else-if="this.isLoading === false && this.info.count_data > 0">
       <div class="flex-row items-center justify-between hidden gap-2 mb-3 sm:flex">
         <p class="text-sm w-fit">
-          <!-- Menampilkan {{ this.info.row_start + (this.info.row_end > this.info.row_start ? '-' + this.info.row_end : '') }} product dari total {{ this.info.count_all }}
+          Menampilkan {{ this.info.row_start + (this.info.row_end > this.info.row_start ? '-' + this.info.row_end : '') }} data dari total {{ this.info.count_all }}
           <span v-if="this.keyword !== null && this.keyword !== ''">
             untuk <span class="font-bold">"{{ this.keyword }}"</span>
-          </span> -->
-          Menampilkan hasil untuk "nyenyenye"
+          </span>
         </p>
         <div class="flex flex-row items-center gap-1 flex-nowrap">
           <label for="input-sort">Urutkan :</label>
@@ -137,44 +132,53 @@ export default {
       this.$emit('toggleFilter', true)
     },
     async getShopList () {
-      console.log('get')
-      this.isLoading = true
-      try {
-        const response = await axios.get(axConfig.shopUrl, {
-          params: {
-            with_product: true,
-            search: this.keyword,
-            sort: this.sort.by,
-            order: this.sort.order,
-            page: this.requestPage,
-            per_page: this.requestPerPage,
-            city: this.filterData.city,
-            province: this.filterData.province,
-            category: this.filterData.category
+      if (this.filterLoading) {
+        console.log('sLoading')
+        this.isLoading = true
+      } else {
+        console.log('get')
+        this.isLoading = true
+        try {
+          const response = await axios.get(axConfig.shopUrl, {
+            headers: axConfig.getHeaders({ 'Content-type': 'application/json' }),
+            params: {
+              with_product: true,
+              search: this.keyword,
+              sort: this.sort.by,
+              order: this.sort.order,
+              page: this.requestPage,
+              per_page: this.requestPerPage,
+              city: this.filterData.city,
+              province: this.filterData.province,
+              category: this.filterData.category
+            }
+          })
+
+          this.info.count_all = response.data.count_all
+          this.info.count_data = response.data.count_data
+          this.info.row_per_page = response.data.row_per_page
+          this.rawdata = response.data.data
+
+          if (this.info.active_page > 1) {
+            var pageBefore = this.info.active_page - 1
+            this.info.row_start = (pageBefore * this.info.row_per_page)
+          } else {
+            this.info.row_start = 1
           }
-        })
 
-        this.info.count_all = response.data.count_all
-        this.info.count_data = response.data.count_data
-        this.info.row_per_page = response.data.row_per_page
-        this.rawdata = response.data.data
+          var rowEnd = this.info.row_start + this.info.row_per_page
+          this.info.row_end = (rowEnd > this.info.count_all ? this.info.count_all : rowEnd)
 
-        if (this.info.active_page > 1) {
-          var pageBefore = this.info.active_page - 1
-          this.info.row_start = (pageBefore * this.info.row_per_page)
-        } else {
-          this.info.row_start = 1
-        }
-
-        var rowEnd = this.info.row_start + this.info.row_per_page
-        this.info.row_end = (rowEnd > this.info.count_all ? this.info.count_all : rowEnd)
-
-        this.isLoading = false
-      } catch (err) {
-        if (err.code === 'ERR_NETWORK') {
-          this.$router.push({ name: 'server-error', props: { statusCode: 500, message: 'Kami sedang offline', subMessage: 'Silahkan coba kembali setelah beberapa saat.</br>Hubungi kontak dibawah jika halaman masih tidak bisa diakses.' } })
-        } else {
-          this.$router.push({ name: 'server-error', props: { statusCode: 500, message: 'Halaman Rusak. Coba lagi nanti', subMessage: 'Hubungi kontak dibawah jika halaman masih tidak bisa diakses.' } })
+          this.isLoading = false
+          console.log('done')
+        } catch (err) {
+          if (err.code === 'ERR_NETWORK') {
+            console.log('cs-a')
+            // this.$router.push({ name: 'server-error', props: { statusCode: 500, message: 'Kami sedang offline', subMessage: 'Silahkan coba kembali setelah beberapa saat.</br>Hubungi kontak dibawah jika halaman masih tidak bisa diakses.' } })
+          } else {
+            console.log('cs-b')
+            // this.$router.push({ name: 'server-error', props: { statusCode: 500, message: 'Halaman Rusak. Coba lagi nanti', subMessage: 'Hubungi kontak dibawah jika halaman masih tidak bisa diakses.' } })
+          }
         }
       }
     },
@@ -205,6 +209,12 @@ export default {
       }
     },
     filterData: {
+      deep: true,
+      handler: function (newValue) {
+        this.getShopList()
+      }
+    },
+    filterLoading: {
       deep: true,
       handler: function (newValue) {
         this.getShopList()
