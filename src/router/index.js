@@ -47,20 +47,18 @@ const routes = [
     path: '/exhibition',
     name: 'exhibition',
     component: ExhibitionView,
-    props: { shopsearch: false },
-    meta: { layout: ExhibitionLayout }
+    meta: { shopsearch: false, layout: ExhibitionLayout }
   },
   {
     path: '/:domain?',
     name: 'shop',
     component: ShopView,
-    meta: { layout: ExhibitionLayout }
+    meta: { shopsearch: true, layout: ExhibitionLayout }
   },
   {
     path: '/exhibition/product/:slug?',
     name: 'product',
     component: ProductView,
-    props: true,
     meta: { layout: ExhibitionLayout }
   },
   {

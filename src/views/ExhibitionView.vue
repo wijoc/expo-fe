@@ -239,7 +239,7 @@
         </div>
       </div>
       <!-- Desktop Filter -->
-      <div id="filter" class="hidden min-h-full bg-white md:flex md:flex-col md:gap-2 md:w-[33.3%] lg:w-[30%]">
+      <div id="filter" class="hidden h-fit bg-white md:flex md:flex-col md:gap-2 md:w-[33.3%] lg:w-[30%] xl:w-[21%]">
         <a class="text-lg font-medium">Filters</a>
         <div class="flex flex-col w-full h-full px-2 py-2 border-gray-200 divide-y-2 shadow-md card border-1">
           <div v-if="this.showContent === 'content-shop'">
@@ -419,7 +419,7 @@
           </div>
         </div>
       </div>
-      <div id="item" class="w-full md:w-[66.6%] lg:w-[70%]">
+      <div id="item" class="w-full md:w-[66.6%] lg:w-[70%] xl:w-[79%]">
         <div class="bg-white tab-nav">
           <a :class="'tab-nav-item ' + (this.showContent === 'content-shop' ? 'active' : '')" @click="changeContent('content-shop')">
             <i class="fa-solid fa-shop"></i>
@@ -532,7 +532,7 @@ export default {
       }
     },
     toggleFilter (toggle = null) {
-      if (toggle || !this.isMobileFilter) {
+      if (toggle || !this.showMobileFilter) {
         this.$refs['filter-mobile'].classList.add('translate-y-0')
         this.$refs['filter-mobile'].classList.remove('translate-y-full')
       } else {
@@ -540,7 +540,7 @@ export default {
         this.$refs['filter-mobile'].classList.remove('translate-y-0')
       }
 
-      this.isMobileFilter = toggle ?? !this.isMobileFilter
+      this.showMobileFilter = toggle ?? !this.showMobileFilter
     },
     toggleLocFilter (mode = 'mobile', toggle) {
       if (mode === 'mobile') {
@@ -621,10 +621,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('categories', ['vxProductCtgrs']),
-    ...mapState('categories', ['vxShopCtgrs']),
-    ...mapState('categories', ['verrProductCtgrs']),
-    ...mapState('categories', ['verrShopCtgrs']),
+    ...mapState('categories', ['vxProductCtgrs', 'vxShopCtgrs', 'verrProductCtgrs', 'verrShopCtgrs']),
     ...mapState('regions', ['vxProvinces']),
     ...mapState('regions', ['verrProvinces']),
     ...mapState('regions', ['vxCities']),

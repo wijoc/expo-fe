@@ -115,10 +115,8 @@ export default {
     },
     async getProductList () {
       if (this.filterLoading) {
-        console.log('sLoading')
         this.isLoading = true
       } else {
-        console.log('getprod')
         this.isLoading = true
         try {
           const response = await axios.get(axConfig.productUrl, {
@@ -139,7 +137,7 @@ export default {
 
           this.info.count_all = response.data.count_all
           this.info.count_data = response.data.count_data
-          this.info.row_per_page = response.data.row_per_page || this.requestPerPage
+          this.info.row_per_page = response.data.row_per_page ?? this.requestPerPage
           this.rawdata = response.data.data
 
           if (this.info.active_page > 1) {

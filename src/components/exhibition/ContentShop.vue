@@ -133,10 +133,8 @@ export default {
     },
     async getShopList () {
       if (this.filterLoading) {
-        console.log('sLoading')
         this.isLoading = true
       } else {
-        console.log('get')
         this.isLoading = true
         try {
           const response = await axios.get(axConfig.shopUrl, {
@@ -170,7 +168,6 @@ export default {
           this.info.row_end = (rowEnd > this.info.count_all ? this.info.count_all : rowEnd)
 
           this.isLoading = false
-          console.log('done')
         } catch (err) {
           if (err.code === 'ERR_NETWORK') {
             console.log('cs-a')
@@ -183,8 +180,7 @@ export default {
       }
     },
     showShop (domain) {
-      // this.$router.push('/' + domain)
-      console.log(domain)
+      this.$router.push('/' + domain)
     }
   },
   computed: {

@@ -6,9 +6,9 @@
     </router-link>
     <div id="search-bar" class="flex w-full gap-1 px-1 py-2 flex-nowrap">
       <div class="relative flex items-center justify-start min-w-full gap-0 p-0 overflow-hidden border-2 rounded-md flex-nowrap border-secondary focus-within:border-primary">
-        <select class="p-1 rounded-l form-control form-control-xs w-fit" v-if="this.shopSearch">
-          <option value="">Di Toko ini</option>
-          <option value="">Di Pameran</option>
+        <select class="p-1 rounded-l form-control form-control-xs w-fit focus:outline-none focus:ring-0 focus:border-none" v-if="this.shopSearch" v-model="searchInShop">
+          <option :value="true">Di Toko ini</option>
+          <option :value="false">Di Pameran</option>
         </select>
         <input type="text" :class="'w-[90%] p-[.2rem] text-sm bg-white placeholder:text-gray-400 focus:outline-none ' + (this.shopSearch ? 'rounded-r' : 'rounded')" placeholder="Cari Barang ..." v-model="keyword" @keyup.enter="setSearch">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="max-w-4 max-h-[0.85rem] text-gray-400 fill-current absolute top-1/2 translate-y-[-50%] right-2 cursor-pointer" @click="setSearch">
@@ -112,7 +112,8 @@ export default {
   name: 'SearchBar',
   data () {
     return {
-      isMenu: false
+      isMenu: false,
+      searchInShop: this.shopSearch ? true : false // eslint-disable-line
     }
   },
   props: {
@@ -166,7 +167,7 @@ export default {
       }
     },
     setSearch () {
-      this.$emit('set', true)
+      this.$emit('set', this.searchInShop)
     }
   },
   computed: {
@@ -181,6 +182,7 @@ export default {
   },
   created () {
     window.addEventListener('scroll', this.windowScrolled)
+    console.log(this.shopsearch)
   },
   destroyed () {
     window.removeEventListener('scroll', this.windowScrolled)

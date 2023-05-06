@@ -53,7 +53,7 @@ const actions = {
       try {
         var response = await axios.get(axConfig.provinceUrl, {
           params: {
-            search: payload.search || null,
+            search: payload.search ?? null,
             order: payload.order ?? 'asc'
           }
         })

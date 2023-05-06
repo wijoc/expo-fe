@@ -1,5 +1,5 @@
-const apiDomain = process.env.VUE_APP_API_URL || 'http://localhost:8000/api/'
-const prefix = process.env.VUE_APP_API_PREFIX || 'beta/'
+const apiDomain = process.env.VUE_APP_API_URL ?? 'http://localhost:8000/api/'
+const prefix = process.env.VUE_APP_API_PREFIX ?? 'beta/'
 
 export const shopUrl = apiDomain + prefix + 'stores/'
 export const productUrl = apiDomain + prefix + 'products/'

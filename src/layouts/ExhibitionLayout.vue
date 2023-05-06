@@ -2,7 +2,7 @@
   <div>
     <ExhibitionHeader />
     <SearchBar
-      :shopSearch="this.shopsearch"
+      :shopSearch="this.$route.meta.shopsearch || false"
       :search.sync="searchKeyword"
       @set="setSearch($event)" />
     <slot />
@@ -24,20 +24,25 @@ export default {
       searchKeyword: ''
     }
   },
-  props: {
-    shopsearch: {
-      type: Boolean,
-      default: () => {
-        return false
-      }
-    }
-  },
+  props: {},
   methods: {
-    setSearch () {
-      if (this.searchKeyword !== this.$route.query.s && encodeURIComponent(this.searchKeyword) !== this.$route.query.s) {
-        /** Both of this won't refresh page */
-        // history.pushState({ s: this.searchKeyword }, null, this.$route.path + '?' + encodeURIComponent('s') + '=' + encodeURIComponent(this.searchKeyword))
-        this.$router.push({ props: { searchTerm: this.searchKeyword }, query: { s: this.searchKeyword } })
+    setSearch (inShop) {
+      if (this.$route.meta.shopsearch) {
+        if (inShop) {
+          if (this.searchKeyword !== this.$route.query.s && encodeURIComponent(this.searchKeyword) !== this.$route.query.s) {
+            /** Both of this won't refresh page */
+            // history.pushState({ s: this.searchKeyword }, null, this.$route.path + '?' + encodeURIComponent('s') + '=' + encodeURIComponent(this.searchKeyword))
+            this.$router.push({ query: { s: this.searchKeyword } })
+          }
+        } else {
+          this.$router.push({ name: 'exhibition', query: { s: this.searchKeyword } })
+        }
+      } else {
+        if (this.searchKeyword !== this.$route.query.s && encodeURIComponent(this.searchKeyword) !== this.$route.query.s) {
+          /** Both of this won't refresh page */
+          // history.pushState({ s: this.searchKeyword }, null, this.$route.path + '?' + encodeURIComponent('s') + '=' + encodeURIComponent(this.searchKeyword))
+          this.$router.push({ query: { s: this.searchKeyword } })
+        }
       }
     }
   },
