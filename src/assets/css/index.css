@@ -359,6 +359,46 @@
   .skeleton {
     @apply relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:bg-gradient-to-r before:from-transparent before:via-white/60 before:animate-[shimmer_1.5s_infinite];
   }
+
+  .pagination {
+    @apply flex flex-row px-0 list-none;
+  }
+
+  .pagination .page-item {
+    @apply relative block bg-white py-1.5 px-3;
+  }
+
+  .pagination-sm .page-item {
+    @apply px-2 py-1 text-sm;
+  }
+
+  .pagination-lg .page-item {
+    @apply px-6 py-3 text-xl;
+  }
+
+  .page-item:first-child {
+    @apply rounded-tl rounded-bl;
+  }
+
+  .page-item:not(:first-child) {
+    @apply ml-[1px];
+  }
+
+  .page-item:last-child {
+    @apply rounded-tr rounded-br;
+  }
+
+  .page-item {
+    @apply relative cursor-pointer hover:bg-gray-300 hover:text-space-black;
+  }
+
+  .page-item.active {
+    @apply font-medium text-tertiary hover:bg-white hover:cursor-default after:absolute after:w-[60%] after:h-1 after:bg-tertiary after:bottom-[0.125rem] after:left-1/2 after:right-1/2 after:-translate-x-1/2;
+  }
+
+  .page-item.disabled {
+    @apply text-gray-400 cursor-not-allowed hover:bg-white;
+  }
 }
 
 @layer utilities {

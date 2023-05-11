@@ -6,18 +6,21 @@
       :search.sync="searchKeyword"
       @set="setSearch($event)" />
     <slot />
+    <TheFooter />
   </div>
 </template>
 
 <script>
 import ExhibitionHeader from '@/components/visitor/ExhibitionHeader.vue'
 import SearchBar from '@/components/exhibition/SearchBar.vue'
+import TheFooter from '@/components/visitor/TheFooter.vue'
 
 export default {
   name: 'ExhibitionLayout',
   components: {
     ExhibitionHeader,
-    SearchBar
+    SearchBar,
+    TheFooter
   },
   data () {
     return {

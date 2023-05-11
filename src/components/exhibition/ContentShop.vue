@@ -1,5 +1,5 @@
 <template>
-  <div id="content-shop" class="animate-[fade_0.5s_ease-in-out_normal]">
+  <div id="content-shop" class="animate-[fade_0.5s_ease-in-out_normal] pb-12">
     <!-- Mobile Filter Button -->
     <div class="relative flex flex-row w-full h-full gap-2 mb-2 overflow-x-scroll md:hidden">
       <template v-if="this.filterLoading">
@@ -66,6 +66,17 @@
           </button>
         </div>
       </div>
+      <div class="flex items-center justify-center w-full mt-5 h-fit">
+        <ul class="justify-end w-full pagination">
+          <li :class="'page-item ' + (this.info.active_page <= 1 ? 'disabled' : '')" @click="changePage(prevPage)"><i class="text-xs fa-solid fa-chevron-left"></i></li>
+          <li :class="'page-item ' + (info.active_page === 1 ? 'active' : '')" @click="changePage(1)">1</li>
+          <li class="font-bold page-item disabled" v-show="this.numBtn[0] >= 3">...</li>
+          <li :class="'page-item ' + (parseInt(info.active_page) === p ? 'active' : '')" v-for="(p, i) in numBtn" :key="i" @click="changePage(p)">{{ p }}</li>
+          <li class="font-bold page-item disabled" v-show="this.numBtn[4] < this.maxPageBtn - 1">...</li>
+          <li class="page-item" v-show="this.maxPageBtn > this.numBtn[4]" @click="changePage(maxPageBtn)">{{ this.maxPageBtn }}</li>
+          <li :class="'page-item ' + (this.info.active_page >= this.maxPageBtn ? 'disabled' : '')" @click="changePage(nextPage)"><i class="text-xs fa-solid fa-chevron-right"></i></li>
+        </ul>
+      </div>
     </template>
     <div class="flex flex-col items-center w-full h-full gap-3 justify-items-center bg-white/60" v-else >
       <img src="@/assets/img/data_not_found.jpg" alt="no data found" class="w-56 rounded-lg max-h-56">
@@ -79,6 +90,8 @@ import axios from 'axios'
 import * as axConfig from '@/config.js'
 import * as currencyHelper from '@/helper/CurrencyHelper.js'
 
+import { mapState, mapActions, mapGetters } from 'vuex'
+
 export default {
   name: 'ContentShop',
   components: {},
@@ -89,13 +102,12 @@ export default {
       info: {
         count_all: 0,
         count_data: 0,
-        active_page: 1,
-        row_per_page: 0,
+        active_page: parseInt(this.$route.query.page) ?? 1,
+        row_per_page: 30,
         row_start: 0,
         row_end: 0
       },
-      requestPage: 1,
-      requestPerPage: 60,
+      requestPerPage: 30,
       message: ''
     }
   },
@@ -128,6 +140,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions({ storeShopIDs: 'shops/storeShopIDs' }),
     toggleFilter () {
       this.$emit('toggleFilter', true)
     },
@@ -136,37 +149,64 @@ export default {
         this.isLoading = true
       } else {
         this.isLoading = true
-        try {
-          const response = await axios.get(axConfig.shopUrl, {
-            headers: axConfig.getHeaders({ 'Content-type': 'application/json' }),
-            params: {
-              with_product: true,
-              search: this.keyword,
-              sort: this.sort.by,
-              order: this.sort.order,
-              page: this.requestPage,
-              per_page: this.requestPerPage,
-              city: this.filterData.city,
-              province: this.filterData.province,
-              category: this.filterData.category
-            }
-          })
-
-          this.info.count_all = response.data.count_all
-          this.info.count_data = response.data.count_data
-          this.info.row_per_page = response.data.row_per_page
-          this.rawdata = response.data.data
-
-          if (this.info.active_page > 1) {
-            var pageBefore = this.info.active_page - 1
-            this.info.row_start = (pageBefore * this.info.row_per_page)
+        var getData = 'new'
+        if (this.sort.by === '' || this.sort.by === 'relevant') {
+          if (typeof this.vxShopIDs[this.info.active_page] !== 'undefined') {
+            getData = 'cache'
           } else {
-            this.info.row_start = 1
+            getData = 'except-cache'
+            var exceptShop = this.shopException(this.info.active_page)
+          }
+        }
+        try {
+          if (getData === 'new' || getData === 'except-cache') {
+            const response = await axios.get(axConfig.shopUrl, {
+              headers: axConfig.getHeaders({ 'Content-type': 'application/json' }),
+              params: {
+                with_product: true,
+                search: this.keyword,
+                sort: this.sort.by,
+                order: this.sort.order,
+                page: this.info.active_page,
+                per_page: this.requestPerPage,
+                city: this.filterData.city,
+                province: this.filterData.province,
+                category: this.filterData.category,
+                except: getData === 'except-cache' && exceptShop && exceptShop.length > 0 ? exceptShop : false
+              }
+            })
+
+            this.info.count_all = response.data.count_all
+            this.info.count_data = response.data.count_data
+            this.info.row_per_page = response.data.row_per_page
+            this.rawdata = response.data.data
+
+            // Store id each page to vuex, when sort by 'relevant'
+            if (response.data.sort_by == null || response.data.sort_by === 'relevant') {
+              const lsData = {
+                page: this.info.active_page,
+                ids: []
+              }
+              this.rawdata.forEach((element) => {
+                lsData.ids.push(element.id)
+              })
+
+              this.storeShopIDs({ data: lsData, command: 'store' })
+            }
+          } else {
+            const response = await axios.get(axConfig.shopUrl + 'multiple', {
+              headers: axConfig.getHeaders({ 'Content-type': 'application/json' }),
+              params: {
+                with_product: true,
+                ids: this.vxShopIDs[this.info.active_page]
+              }
+            })
+
+            this.info.count_data = response.data.count_data
+            this.rawdata = response.data.data
           }
 
-          var rowEnd = this.info.row_start + this.info.row_per_page
-          this.info.row_end = (rowEnd > this.info.count_all ? this.info.count_all : rowEnd)
-
+          this.setRowStartEnd()
           this.isLoading = false
         } catch (err) {
           if (err.code === 'ERR_NETWORK') {
@@ -179,15 +219,67 @@ export default {
         }
       }
     },
+    setRowStartEnd () {
+      if (this.info.active_page > 1) {
+        var pageBefore = this.info.active_page - 1
+        this.info.row_start = (pageBefore * this.info.row_per_page)
+      } else {
+        this.info.row_start = 1
+      }
+
+      var rowEnd = this.info.row_start + this.info.row_per_page
+      this.info.row_end = (rowEnd > this.info.count_all ? this.info.count_all : rowEnd)
+    },
     showShop (domain) {
       this.$router.push('/' + domain)
+    },
+    changePage (page) {
+      if (page !== this.$route.query.page && encodeURIComponent(page) !== this.$route.query.page) {
+        /** Both of this won't refresh page */
+        // history.pushState({ page: page }, null, this.$route.path + '?' + encodeURIComponent('page') + '=' + encodeURIComponent(page))
+        this.$router.push({ query: { page: page } })
+      }
+      this.info.active_page = page
+      this.getShopList()
     }
   },
   computed: {
+    ...mapState('shops', ['vxShopIDs']),
+    ...mapGetters({ shopException: 'shops/getterShopExceptPage' }),
     sort: {
       get () {
         return this.sortData
       }
+    },
+    maxPageBtn: function () {
+      if (parseInt(this.info.count_all) > 0) {
+        return Math.ceil(parseInt(this.info.count_all) / this.info.row_per_page)
+      } else {
+        return 20
+      }
+    },
+    prevPage: function () {
+      return this.info.active_page - 1
+    },
+    nextPage: function () {
+      return this.info.active_page + 1
+    },
+    numBtn: function () {
+      const btn = []
+      if (this.info.active_page > 3) {
+        for (let p = this.info.active_page - 2; p <= this.info.active_page + 2; p++) {
+          if (p <= this.maxPageBtn) {
+            btn.push(p)
+          }
+        }
+      } else {
+        for (let p = this.info.active_page > 1 ? 2 : this.nextPage; p <= 6; p++) {
+          if (p <= this.maxPageBtn) {
+            btn.push(p)
+          }
+        }
+      }
+      return btn
     }
   },
   filters: {
@@ -201,13 +293,15 @@ export default {
   watch: {
     keyword: {
       handler: function (newValue) {
-        this.getShopList()
+        this.storeShopIDs({ command: 'destroy' })
+        this.changePage(1)
       }
     },
     filterData: {
       deep: true,
       handler: function (newValue) {
-        this.getShopList()
+        this.storeShopIDs({ command: 'destroy' })
+        this.changePage(1)
       }
     },
     filterLoading: {
@@ -219,12 +313,16 @@ export default {
     sortData: {
       deep: true,
       handler: function (newValue) {
-        this.getShopList()
+        this.storeShopIDs({ command: 'destroy' })
+        this.changePage(1)
       }
     }
   },
   beforeMount () {
-    this.getShopList()
+    this.changePage(1)
+  },
+  beforeDestroy () {
+    this.storeShopIDs({ command: 'destroy' })
   }
 }
 </script>

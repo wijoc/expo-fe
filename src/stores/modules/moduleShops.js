@@ -31,7 +31,8 @@ const state = {
     error: false,
     code: null,
     message: ''
-  }
+  },
+  vxShopIDs: {}
 }
 
 const mutations = {
@@ -40,6 +41,12 @@ const mutations = {
   },
   setShopError (state, payload) {
     state.verrSelectedShop = payload
+  },
+  setShopIDs (state, payload) {
+    state.vxShopIDs[payload.page] = payload.ids
+  },
+  destroyShopIds (state, payload) {
+    state.vxShopIDs = {}
   }
 }
 
@@ -64,10 +71,27 @@ const actions = {
         commit('setShopError', { error: true, code: err.code })
       }
     }
+  },
+  storeShopIDs ({ commit }, payload) {
+    if (payload.command === 'store') {
+      commit('setShopIDs', payload.data)
+    } else if (payload.command === 'destroy') {
+      commit('destroyShopIds')
+    }
   }
 }
 
-const getters = {}
+const getters = {
+  getterShopExceptPage: (state) => (page = null) => {
+    if (page) {
+      const cloneID = Object.assign({}, state.vxShopIDs) // clone state
+      delete cloneID[page] // delete ids by page-index key
+      return cloneID
+    } else {
+      return state.vxShopIDs
+    }
+  }
+}
 
 export default {
   namespaced, state, mutations, actions, getters
