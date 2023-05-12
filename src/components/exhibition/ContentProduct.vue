@@ -45,7 +45,9 @@
       <GridProduct
         :divClass="'grid grid-flow-row grid-cols-2 gap-2 md:grid-cols-3 md:gap-2 lg:grid-cols-4 xl:grid-cols-5'"
         :rowdata="this.rawdata"
-        @detail="showProduct" />
+        :info="this.info"
+        @detail="showProduct"
+        @page="changePage" />
     </template>
     <div class="flex flex-col items-center w-full h-full gap-3 justify-items-center bg-white/60" v-else >
       <img src="@/assets/img/data_not_found.jpg" alt="no data found" class="w-56 rounded-lg max-h-56">
@@ -60,6 +62,8 @@ import GridProduct from '@/components/comp/GridProduct.vue'
 import axios from 'axios'
 import * as axConfig from '@/config.js'
 
+import { mapState, mapActions, mapGetters } from 'vuex'
+
 export default {
   name: 'ContentProduct',
   components: {
@@ -72,13 +76,12 @@ export default {
       info: {
         count_all: 1,
         count_data: 1,
-        active_page: 1,
-        row_per_page: 0,
+        active_page: parseInt(this.$route.query.page) ?? 1,
+        row_per_page: 120,
         row_start: 0,
         row_end: 0
       },
-      requestPage: 1,
-      requestPerPage: 100
+      requestPerPage: 120
     }
   },
   props: {
@@ -110,6 +113,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions({ storeProductIDs: 'products/storeProductIDs' }),
     toggleFilter () {
       this.$emit('toggleFilter', true)
     },
@@ -118,38 +122,65 @@ export default {
         this.isLoading = true
       } else {
         this.isLoading = true
-        try {
-          const response = await axios.get(axConfig.productUrl, {
-            headers: axConfig.getHeaders({ 'Content-type': 'application/json' }),
-            params: {
-              search: this.keyword,
-              sort: this.sort.by,
-              order: this.sort.order,
-              page: this.requestPage,
-              per_page: this.requestPerPage,
-              min_price: this.filterData.minPrice,
-              max_price: this.filterData.maxPrice,
-              condition: this.filterData.condition,
-              city: this.filterData.city,
-              category: this.filterData.category
-            }
-          })
-
-          this.info.count_all = response.data.count_all
-          this.info.count_data = response.data.count_data
-          this.info.row_per_page = response.data.row_per_page ?? this.requestPerPage
-          this.rawdata = response.data.data
-
-          if (this.info.active_page > 1) {
-            var pageBefore = this.info.active_page - 1
-            this.info.row_start = (pageBefore * this.info.row_per_page)
+        var getData = 'new'
+        if (this.sort.by === '' || this.sort.by === 'relevant') {
+          if (typeof this.vxProductIDs[this.info.active_page] !== 'undefined') {
+            getData = 'cache'
           } else {
-            this.info.row_start = 1
+            getData = 'except-cache'
+            var exceptProduct = this.productException(this.info.active_page)
+          }
+        }
+
+        try {
+          if (getData === 'new' || getData === 'except-cache') {
+            const response = await axios.get(axConfig.productUrl, {
+              headers: axConfig.getHeaders({ 'Content-type': 'application/json' }),
+              params: {
+                search: this.keyword,
+                sort: this.sort.by,
+                order: this.sort.order,
+                page: this.info.active_page,
+                per_page: this.requestPerPage,
+                min_price: this.filterData.minPrice,
+                max_price: this.filterData.maxPrice,
+                condition: this.filterData.condition,
+                city: this.filterData.city,
+                category: this.filterData.category,
+                except: getData === 'except-cache' && exceptProduct && exceptProduct.length > 0 ? exceptProduct : false
+              }
+            })
+
+            this.info.count_all = response.data.count_all
+            this.info.count_data = response.data.count_data
+            this.info.row_per_page = response.data.row_per_page ?? this.requestPerPage
+            this.rawdata = response.data.data
+
+            // Store id each page to vuex, when sort by 'relevant'
+            if (response.data.sort_by == null || response.data.sort_by === 'relevant') {
+              const lsData = {
+                page: this.info.active_page,
+                ids: []
+              }
+              this.rawdata.forEach((element) => {
+                lsData.ids.push(element.id)
+              })
+
+              this.storeProductIDs({ data: lsData, command: 'store' })
+            }
+          } else {
+            const response = await axios.get(axConfig.productUrl + 'multiple', {
+              headers: axConfig.getHeaders({ 'Content-type': 'application/json' }),
+              params: {
+                ids: this.vxProductIDs[this.info.active_page]
+              }
+            })
+
+            this.info.count_data = response.data.count_data
+            this.rawdata = response.data.data
           }
 
-          var rowEnd = this.info.row_start + this.info.row_per_page
-          this.info.row_end = (rowEnd > this.info.count_all ? this.info.count_all : rowEnd)
-
+          this.setRowStartEnd()
           this.isLoading = false
         } catch (err) {
           if (err.code === 'ERR_NETWORK') {
@@ -162,11 +193,35 @@ export default {
         }
       }
     },
+    setRowStartEnd () {
+      let rowEnd = 0
+      if (this.info.active_page > 1) {
+        var pageBefore = this.info.active_page - 1
+        this.info.row_start = (pageBefore * parseInt(this.info.row_per_page)) + 1
+        rowEnd = parseInt(this.info.row_start) + parseInt(this.info.row_per_page) - 1
+      } else {
+        this.info.row_start = 1
+        rowEnd = parseInt(this.info.row_per_page)
+      }
+
+      this.info.row_end = (rowEnd > this.info.count_all ? this.info.count_all : rowEnd)
+    },
     showProduct (prd) {
       this.$router.push({ name: 'product', params: { slug: prd.slug }, query: { pid: prd.uuid } })
+    },
+    changePage (page) {
+      if (page !== this.$route.query.page && encodeURIComponent(page) !== this.$route.query.page) {
+        /** Both of this won't refresh page */
+        // history.pushState({ page: page }, null, this.$route.path + '?' + encodeURIComponent('page') + '=' + encodeURIComponent(page))
+        this.$router.push({ query: { page: page } })
+      }
+      this.info.active_page = page
+      this.getProductList()
     }
   },
   computed: {
+    ...mapState('products', ['vxProductIDs']),
+    ...mapGetters({ productException: 'products/getterProductExceptPage' }),
     sort: {
       get () {
         return this.sortData
@@ -176,25 +231,30 @@ export default {
   watch: {
     keyword: {
       handler: function (newValue) {
-        this.getProductList()
-        console.log(newValue)
+        this.storeShopIDs({ command: 'destroy' })
+        this.changePage(1)
       }
     },
     filterData: {
       deep: true,
       handler: function (newValue) {
-        this.getProductList()
+        this.storeShopIDs({ command: 'destroy' })
+        this.changePage(1)
       }
     },
     sortData: {
       deep: true,
       handler: function (newValue) {
-        this.getProductList()
+        this.storeShopIDs({ command: 'destroy' })
+        this.changePage(1)
       }
     }
   },
   beforeMount () {
-    this.getProductList()
+    this.changePage(1)
+  },
+  beforeDestroy () {
+    this.storeShopIDs({ command: 'destroy' })
   }
 }
 </script>

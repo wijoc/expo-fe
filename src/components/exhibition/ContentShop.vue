@@ -220,14 +220,16 @@ export default {
       }
     },
     setRowStartEnd () {
+      let rowEnd = 0
       if (this.info.active_page > 1) {
         var pageBefore = this.info.active_page - 1
-        this.info.row_start = (pageBefore * this.info.row_per_page)
+        this.info.row_start = (pageBefore * parseInt(this.info.row_per_page)) + 1
+        rowEnd = parseInt(this.info.row_start) + parseInt(this.info.row_per_page) - 1
       } else {
         this.info.row_start = 1
+        rowEnd = parseInt(this.info.row_per_page)
       }
 
-      var rowEnd = this.info.row_start + this.info.row_per_page
       this.info.row_end = (rowEnd > this.info.count_all ? this.info.count_all : rowEnd)
     },
     showShop (domain) {

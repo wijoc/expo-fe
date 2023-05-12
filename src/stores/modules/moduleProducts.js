@@ -27,7 +27,8 @@ const state = {
     images: [],
     created_at: null,
     last_updated_at: null
-  }
+  },
+  vxProductIDs: {}
 }
 
 const mutations = {
@@ -54,6 +55,12 @@ const mutations = {
     state.vxSelectedProduct.images = payload.images
     state.vxSelectedProduct.created_at = payload.created_at
     state.vxSelectedProduct.last_updated_at = payload.last_updated_at
+  },
+  setProductIDs (state, payload) {
+    state.vxProductIDs[payload.page] = payload.ids
+  },
+  destroyProductIDs (state, payload) {
+    state.vxProductIDs = {}
   }
 }
 
@@ -77,10 +84,27 @@ const actions = {
       // this.$router.push({ name: '404', params: { message: 'Product tidak ditemukan' } })
       console.log('a')
     }
+  },
+  storeProductIDs ({ commit }, payload) {
+    if (payload.command === 'store') {
+      commit('setProductIDs', payload.data)
+    } else if (payload.command === 'destroy') {
+      commit('destroyProductIDs')
+    }
   }
 }
 
-const getters = {}
+const getters = {
+  getterProductExceptPage: (state) => (page = null) => {
+    if (page) {
+      const cloneID = Object.assign({}, state.vxProductIDs) // clone state
+      delete cloneID[page] // delete ids by page-index key
+      return cloneID
+    } else {
+      return state.vxProductIDs
+    }
+  }
+}
 
 export default {
   namespaced, state, mutations, actions, getters
