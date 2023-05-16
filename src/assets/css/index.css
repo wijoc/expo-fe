@@ -343,11 +343,21 @@
   }
 
   .table-bordered, .table-bordered th, .table-bordered tr, .table-bordered td {
+    @apply border-gray-300 border-1;
+    border-collapse: collapse;
+  }
+
+  .table-bordered.solid-border, .table-bordered.solid-border th, .table-bordered.solid-border tr, .table-bordered.solid-border td {
     @apply border-black border-1;
     border-collapse: collapse;
   }
 
   .table-bordered-b th, .table-bordered-b tr, .table-bordered-b td {
+    @apply border-gray-300 border-b-1;
+    border-collapse: collapse;
+  }
+
+  .table-bordered-b.solid-border th, .table-bordered-b.solid-border tr, .table-bordered-b.solid-border td {
     @apply border-black border-b-1;
     border-collapse: collapse;
   }

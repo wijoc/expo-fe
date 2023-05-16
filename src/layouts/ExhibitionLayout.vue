@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="bg-gray-100/50">
     <ExhibitionHeader />
     <SearchBar
       :shopSearch="this.$route.meta.shopsearch || false"

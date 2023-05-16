@@ -1,12 +1,26 @@
 <template>
-  <main class="min-h-screen bg-white">
-    <SearchBar
-      :shopSearch="false"
-      :search.sync="searchTerm" />
-    <div class="container flex flex-col h-full pt-12 pb-20 divide-gray-400 gap-y-2 divide-y-1 md:gap-4 md:divide-y-0">
-      <div class="grid content-start grid-flow-row grid-cols-12 md:gap-4">
-        <div class="col-span-12 bg-white h-fit sm:col-span-5 md:row-span-2 md:sticky md:top-0">
-          <template v-if="this.isLoading.product">
+  <div class="container min-h-screen py-12 bg-gray-100/50 sm:pt-16 md:pt-20 lg:px-20">
+    <div class="flex flex-col items-center justify-center w-full h-full gap-3 bg-white/60" v-if="this.notFound">
+      <img src="@/assets/img/data_not_found.jpg" alt="data not found. empty-concept bvy storyset on freepik" class="w-56 rounded-lg max-h-56">
+      <span class="text-xs italic sm:text-sm">
+        <a href="https://www.freepik.com/free-vector/empty-concept-illustration_7117861.htm#query=no%20data&position=5&from_view=keyword&track=sph" class="underline cursor-pointer hover:text-blue-400">Image by storyset</a> on Freepik
+        product not found
+      </span>
+      <h3 class="font-extrabold text-center uppercase font-md text-secondary">Waduh, Tujuanmu tidak ditemukan!</h3>
+      <h5 class="font-light text-center">Mungkin salah alamat. Ayo lihat pameran lainnya!</h5>
+      <div class="flex flex-wrap items-center justify-center w-full gap-2 sm:flex-nowrap">
+        <button class="rounded w-fit btn btn-outline-secondary sm:w-1/2 md:w-fit">
+          Home
+        </button>
+        <button class="rounded w-fit btn btn-secondary sm:w-1/2 md:w-fit">
+          Lihat Pameran
+        </button>
+      </div>
+    </div>
+    <div class="flex flex-col gap-y-2 md:gap-4 md:divide-y-0" v-else>
+      <div class="grid content-start grid-flow-row grid-cols-12 pt-2 pb-3 bg-white shadow-sm md:gap-4">
+        <template v-if="this.isLoading.product">
+          <div class="col-span-12 bg-white h-fit sm:col-span-5 md:row-span-2 md:top-0">
             <ul ref="carousel-preview" class="flex flex-row gap-3 overflow-x-scroll overflow-y-hidden flex-nowrap max-h-56 snap-mandatory snap-x sm:overflow-x-hidden">
               <li class="w-full h-56 rounded bg-gray-300/80 skeleton"></li>
             </ul>
@@ -15,9 +29,49 @@
                 <li class="w-[3.5rem] h-14 rounded bg-gray-300/80 skeleton lg:h-20" v-for="i in 5" :key="i"></li>
               </ul>
             </div>
-          </template>
-          <template v-else>
-            <ul ref="carousel-preview" class="flex flex-row gap-3 overflow-x-scroll overflow-y-hidden flex-nowrap max-h-56 snap-mandatory snap-x sm:overflow-x-hidden">
+          </div>
+          <div class="flex flex-col col-span-12 gap-1 px-2 py-3 sm:col-span-7 md:col-span-7 md:row-span-1">
+            <span class="w-11/12 h-6 rounded bg-gray-300/80 skeleton"></span>
+            <span class="w-6/12 h-6 rounded bg-gray-300/80 skeleton"></span>
+            <table class="w-full text-sm font-light table-auto table-bordered-b">
+              <tr class="p-5">
+                <td class="w-[35%] py-1.5 font-medium">Kondisi</td>
+                <td class="px-1 w-fit">:</td>
+                <td class="">
+                  <p class="w-48 h-5 rounded bg-gray-300/80 skeleton"></p>
+                </td>
+              </tr>
+              <tr>
+                <td class="w-[35%] py-1.5 font-medium">Berat Satuan</td>
+                <td class="px-1 w-fit">:</td>
+                <td class="">
+                  <p class="w-48 h-5 rounded bg-gray-300/80 skeleton"></p>
+                </td>
+              </tr>
+              <tr>
+                <td class="w-[35%] py-1.5 font-medium">Min. Pembelian</td>
+                <td class="px-1 w-fit">:</td>
+                <td class="">
+                  <p class="w-48 h-5 rounded bg-gray-300/80 skeleton"></p>
+                </td>
+              </tr>
+            </table>
+            <span class="text-sm font-medium">Deskripsi : </span>
+            <p class="w-full h-5 rounded bg-gray-300/80 skeleton"></p>
+            <p class="w-full h-5 rounded bg-gray-300/80 skeleton"></p>
+          </div>
+          <div class="col-span-12 fixed w-full pt-1.5 pb-2 px-1.5 left-0 bottom-0 bg-white z-50 md:relative md:col-span-7 md:row-span-1 md:rounded md:h-fit md:z-0">
+            <span class="w-full h-6 rounded bg-gray-300/80 skeleton"></span>
+            <div class="flex gap-1 flex-nowrap">
+              <button class="btn btn-base btn-disabled w-[10%] h-6 rounded skeleton"></button>
+              <button class="btn btn-base btn-disabled w-[90%] h-6 rounded skeleton"></button>
+              <button class="btn btn-base btn-disabled w-[90%] h-6 rounded skeleton"></button>
+            </div>
+          </div>
+        </template>
+        <template v-else>
+          <div class="col-span-12 bg-white h-fit sm:col-span-5 md:row-span-2 md:top-0">
+            <ul ref="carousel-preview" class="flex flex-row gap-3 overflow-x-scroll overflow-y-hidden border-b-2 border-gray-100/50 flex-nowrap max-h-56 snap-mandatory snap-x sm:overflow-x-hidden">
               <li id="a" class="relative flex items-center justify-center max-w-full min-w-full snap-center max-h-56">
                 <img src="@/assets/img/product/product_1.jpg" alt="Product Image" class="max-w-full max-h-56">
                 <span class="absolute px-2 py-1 text-sm font-medium text-center text-white rounded bg-black/30 left-1 bottom-1">1/8</span>
@@ -56,97 +110,87 @@
                 </svg>
               </span>
             </div>
-          </template>
-        </div>
-        <div ref="product-desc" class="flex flex-col col-span-12 gap-2 px-2 py-3 sm:col-span-7 md:col-span-7 md:row-span-1">
-          <template v-if="this.isLoading.product">
-            <span class="w-11/12 h-6 rounded bg-gray-300/80 skeleton"></span>
-            <span class="w-6/12 h-6 rounded bg-gray-300/80 skeleton"></span>
-            <table class="w-full text-sm font-light table-auto table-bordered-b">
+          </div>
+          <div ref="product-desc" class="flex flex-col col-span-12 gap-1 px-2 py-3 sm:col-span-7 md:col-span-7 md:row-span-1">
+            <h4 class="title-product">{{ this.productDetail.name }}</h4>
+            <!-- <p class="font-bold">Rp99.999</p> -->
+            <h5 class="text-lg font-bold text-left">
+              {{ this.productDetail.price_net | rupiah }}
+            </h5>
+            <span class="flex items-center gap-1 flex-nowrap">
+              <span class="bg-tertiary/60 rounded font-medium text-sm text-white py-0.5 px-1.5">
+                {{ this.productDetail.discount_percent | disc }}
+              </span>
+              <h5 class="font-normal text-left text-gray-400 line-through">
+                {{ this.productDetail.price_initial | rupiah }}
+              </h5>
+            </span>
+            <table class="w-full text-sm font-light border-gray-300 table-auto table-bordered-b">
               <tr class="p-5">
                 <td class="w-[35%] py-1.5 font-medium">Kondisi</td>
                 <td class="px-1 w-fit">:</td>
-                <td class="">
-                  <p class="w-48 h-5 rounded bg-gray-300/80 skeleton"></p>
-                </td>
+                <td class="w-full">{{ this.productDetail.condition }}</td>
               </tr>
               <tr>
                 <td class="w-[35%] py-1.5 font-medium">Berat Satuan</td>
                 <td class="px-1 w-fit">:</td>
-                <td class="">
-                  <p class="w-48 h-5 rounded bg-gray-300/80 skeleton"></p>
-                </td>
+                <td class="w-full">{{ this.productDetail.weight_in_gram | weight }}</td>
               </tr>
               <tr>
                 <td class="w-[35%] py-1.5 font-medium">Min. Pembelian</td>
                 <td class="px-1 w-fit">:</td>
-                <td class="">
-                  <p class="w-48 h-5 rounded bg-gray-300/80 skeleton"></p>
+                <td class="w-full">{{ this.productDetail.minimal_purchase }}</td>
+              </tr>
+              <tr>
+                <td class="w-[35%] py-1.5 font-medium">Status Stok</td>
+                <td class="px-1 w-fit">:</td>
+                <td class="w-full py-2">
+                  <span :class="'rounded font-medium p-1 ' + (this.productDetail.stock_status === 'Preorder' ? 'bg-secondary text-white' : 'bg-green-300 text-space-black')">
+                    {{ this.productDetail.stock_status }}
+                  </span>
                 </td>
               </tr>
-            </table>
-            <span class="text-sm font-medium">Deskripsi : </span>
-            <p class="w-full h-5 rounded bg-gray-300/80 skeleton"></p>
-            <p class="w-full h-5 rounded bg-gray-300/80 skeleton"></p>
-          </template>
-          <template v-else>
-            <h4 class="title-product">Lorem ipsum dolor sit amet consectetur adipisicing</h4>
-            <p class="font-bold">Rp99.999</p>
-            <table class="w-full text-sm font-light table-auto table-bordered-b">
-              <tr class="p-5">
-                <td class="w-[35%] py-1.5 font-medium">Kondisi</td>
+              <tr v-if="this.productDetail.stock_status === 'Preorder'">
+                <td class="w-[35%] py-1.5 font-medium">Tersedia pada</td>
                 <td class="px-1 w-fit">:</td>
-                <td class="w-full">Baru</td>
-              </tr>
-              <tr>
-                <td class="w-[35%] py-1.5 font-medium">Berat Satuan</td>
-                <td class="px-1 w-fit">:</td>
-                <td class="w-full">1 Kg</td>
-              </tr>
-              <tr>
-                <td class="w-[35%] py-1.5 font-medium">Min. Pembelian</td>
-                <td class="px-1 w-fit">:</td>
-                <td class="w-full">1</td>
+                <td class="w-full" v-if="this.productDetail.available_date">{{ this.productDetail.available_date | datef }}</td>
+                <td class="w-full" v-else>{{ this.productDetail.available_days }} Hari</td>
               </tr>
             </table>
             <span class="text-sm font-medium">Deskripsi : </span>
             <p class="text-sm font-light">
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolore perspiciatis repellendus, alias
-              dolorum magni nulla maiores dolorem architecto sapiente labore voluptate, commodi et repudiandae,
-              laborum minus sit impedit debitis! Adipisci.
+              {{ this.productDetail.description }}
             </p>
-          </template>
-        </div>
-        <div class="col-span-12 fixed w-full pt-1.5 pb-2 px-1.5 left-0 bottom-0 bg-white z-50 md:relative md:col-span-7 md:row-span-1 md:rounded md:h-fit md:z-0">
-          <template v-if="this.isLoading.product">
-            <span class="w-full h-6 rounded bg-gray-300/80 skeleton"></span>
-            <div class="flex gap-1 flex-nowrap">
-              <button class="btn btn-base btn-disabled w-[10%] h-6 rounded skeleton"></button>
-              <button class="btn btn-base btn-disabled w-[90%] h-6 rounded skeleton"></button>
-              <button class="btn btn-base btn-disabled w-[90%] h-6 rounded skeleton"></button>
-            </div>
-          </template>
-          <template v-else>
+          </div>
+          <div class="col-span-12 fixed w-full pt-1.5 pb-2 px-1.5 left-0 bottom-0 bg-white z-50 md:relative md:col-span-7 md:row-span-1 md:rounded md:h-fit md:z-0">
             <div class="hidden md:flex md:flex-col md:w-full">
               <p class="font-medium">Atur jumlah dan catatan</p>
             </div>
             <div class="flex gap-1 flex-nowrap">
-              <button class="text-gray-500 rounded btn btn-base btn-outline-gray w-fit h-fit">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="w-5 h-5 fill-current">
+              <button class="h-full rounded text-primary btn btn-base btn-outline-primary w-fit">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="w-6 h-6 fill-current">
                   <!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
                   <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
                 </svg>
               </button>
-              <button class="btn btn-base btn-outline-secondary w-[90%] h-fit rounded">
-                Pre-Order
-              </button>
-              <button class="btn btn-base btn-secondary w-[90%] h-fit rounded">
+              <button class="btn btn-base btn-outline-secondary bg-secondary/20 w-[90%] h-fit rounded">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="max-w-[1rem] max-h-4 fill-current">
+                  <!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                  <path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/>
+                </svg>
                 Keranjang
               </button>
+              <button class="btn btn-base btn-secondary w-[90%] min-h-full rounded text-sm xs:text-base" v-if="this.productDetail.stock_status === 'Preorder'">
+                Pesan Langsung
+              </button>
+              <button class="btn btn-base btn-secondary w-[90%] min-h-full rounded text-sm xs:text-base" v-else>
+                Beli Langsung
+              </button>
             </div>
-          </template>
-        </div>
+          </div>
+        </template>
       </div>
+      <!-- Shop Section -->
       <div class="flex items-start justify-start w-full gap-2 p-2 sm:rounded sm:shadow-lg">
         <template v-if="this.isLoading.shop">
           <div class="w-24 h-24 rounded bg-gray-300/80 skeleton"></div>
@@ -157,18 +201,18 @@
         </template>
         <template v-else>
           <img src="@/assets/img/toko/toko_2.jpg" alt="brand logo image" class="max-w-2xl border-gray-100 rounded max-h-24 border-1">
-          <div class="flex flex-col items-start gap-1 mx-2 mt-1">
+          <div class="flex flex-col items-start w-full gap-1 mx-2 mt-1">
             <h2 class="text-sm font-bold">{{ this.shopDetail.store_name }}</h2>
             <h5 class="text-xs font-light">{{ this.shopDetail.city + ', ' + this.shopDetail.province }}</h5>
-            <div class="flex gap-1 mt-1">
-              <button class="rounded btn btn-base btn-outline-green max-w-fit">
+            <div class="flex flex-col w-full gap-1 mt-1 sm:flex-row">
+              <button class="w-full rounded btn btn-base btn-outline-green">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="w-4 h-4 fill-current">
                   <!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
                   <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
                 </svg>
                 Whatsapp
               </button>
-              <button class="rounded btn btn-base btn-outline-gray max-w-fit" @click="showShop">
+              <button class="w-full rounded btn btn-base btn-outline-gray" @click="showShop">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="w-4 h-4 fill-current">
                   <!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M36.8 192H603.2c20.3 0 36.8-16.5 36.8-36.8c0-7.3-2.2-14.4-6.2-20.4L558.2 21.4C549.3 8 534.4 0 518.3 0H121.7c-16 0-31 8-39.9 21.4L6.2 134.7c-4 6.1-6.2 13.2-6.2 20.4C0 175.5 16.5 192 36.8 192zM64 224V384v80c0 26.5 21.5 48 48 48H336c26.5 0 48-21.5 48-48V384 224H320V384H128V224H64zm448 0V480c0 17.7 14.3 32 32 32s32-14.3 32-32V224H512z"/>
                 </svg>
@@ -178,6 +222,7 @@
           </div>
         </template>
       </div>
+      <!-- Product-in-shop Section -->
       <div class="pt-3">
         <div class="flex justify-between flex-nowrap">
           <h4 class="font-medium tracking-wide text-md">Lainnya dari toko ini</h4>
@@ -189,27 +234,29 @@
             </svg>
           </h4>
         </div>
-        <div class="relative flex flex-row gap-2 pt-2 overflow-x-scroll md:grid md:grid-flow-row md:grid-cols-5 md:overflow-x-hidden lg:grid-cols-5 xl:grid-cols-6">
+        <div class="flex flex-row gap-2 pt-2 overflow-x-scroll md:grid md:grid-flow-row md:grid-cols-5 md:overflow-x-hidden lg:grid-cols-5 xl:grid-cols-6">
           <template v-if="this.isLoading.shop && this.isLoading.shopProduct">
             <div class="min-w-[8rem] w-auto h-40 card shadow-lg rounded bg-gray-300/80 skeleton md:col-span-1 md:min-w-0" v-for="i in 5" :key="i">
             </div>
           </template>
           <template v-else>
-            <div :class="'flex flex-col card shadow-lg justify-center min-w-[8rem] w-fit max-h-48 border border-gray-100 cursor-pointer hover:border-primary hover:-mt-1 transition duration-75 md:col-span-1 md:min-w-0'" v-for="(prd, i) in this.shopProduct" :key="i">
-              <img src="@/assets/img/product/product_1.jpg" alt="" class="max-w-full max-h-36">
+            <div :class="'flex flex-col justify-center min-w-[8rem] w-fit max-h-48 border border-gray-200 cursor-pointer content-item hover:border-primary hover:-mt-1 transition duration-75 md:col-span-1 md:min-w-0'" v-for="(prd, i) in this.shopProduct" :key="i" @click="showProduct('shop', i)">
+              <div class="flex items-center justify-center bg-gray-100/50 h-36">
+                <img src="@/assets/img/product/product_1.jpg" alt="" class="object-scale-down max-w-full max-h-36">
+              </div>
               <div class="flex flex-col gap-[0.125rem] py-2 px-1">
                 <p class="title-product">
-                  {{ prd.name }}
+                  {{ prd.name | shortTitle }}
                 </p>
-                <h5 class="font-bold text-left text-normal">
-                  <!-- {{ prd.salePrice }} -->
+                <h5 class="text-sm font-bold text-left">
+                  {{ prd.price_net | rupiah }}
                 </h5>
-                <span class="flex items-center gap-1 flex-nowrap">
-                  <span class="bg-green-300 rounded font-medium text-xs text-primary p-0.5">
-                    {{ prd.disc_percent }}
+                <span class="flex flex-col items-start justify-start gap-1 flex-nowrap sm:flex-row">
+                  <span class="bg-green-300 rounded font-medium text-sm text-secondary p-0.5">
+                    {{ prd.discount_percent | disc }}
                   </span>
                   <p class="text-xs font-normal text-left text-gray-400 line-through">
-                    {{ prd.price }}
+                    {{ prd.price_initial | rupiah }}
                   </p>
                 </span>
               </div>
@@ -219,11 +266,12 @@
               <!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
               <path d="M256 0C114.6 0 0 114.6 0 256S114.6 512 256 512s256-114.6 256-256S397.4 0 256 0zM135 241c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l87 87 87-87c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9L273 345c-9.4 9.4-24.6 9.4-33.9 0L135 241z"/>
               </svg>
-              <span class="text-sm font-light">Lihat lainnya</span>
+              <span class="text-sm font-light" @click="showShop">Lihat lainnya</span>
             </div>
           </template>
         </div>
       </div>
+      <!-- Similar Product Section -->
       <div class="pt-3">
         <div class="flex justify-between flex-nowrap">
           <h4 class="font-medium tracking-wide text-md">Produk serupa</h4>
@@ -234,37 +282,44 @@
             </div>
           </template>
           <template v-else>
-            <div class="flex flex-col justify-center col-span-1 transition duration-75 border border-gray-100 shadow cursor-pointer card hover:border-primary hover:-mt-1" v-for="i in 12" :key="i">
-              <img src="@/assets/img/product/product_1.jpg" alt="" class="max-w-full max-h-36">
+            <div class="flex flex-col justify-center col-span-1 transition duration-75 border border-gray-100 shadow cursor-pointer hover:border-primary hover:-mt-1" v-for="(prdSmlr, i) in this.productSimilar" :key="i" @click="showProduct('similar', i)">
+              <div class="flex items-center justify-center bg-gray-100/50 h-36">
+                <img src="@/assets/img/product/product_1.jpg" alt="" class="object-scale-down max-w-full max-h-36">
+              </div>
               <div class="flex flex-col gap-[0.125rem] py-2 px-1">
                 <p class="title-product">
-                  test prd
+                  {{ prdSmlr.name | shortTitle }}
                 </p>
-                <h5 class="font-bold text-left text-normal">
-                  <!-- {{ prd.salePrice }} -->
+                <h5 class="text-sm font-bold text-left">
+                  {{ prdSmlr.price_net | rupiah }}
                 </h5>
-                <span class="flex items-center gap-1 flex-nowrap">
-                  <span class="bg-green-300 rounded font-medium text-xs text-primary p-0.5">
-                    100%
+                <span class="flex flex-col items-start justify-start gap-1 flex-nowrap sm:flex-row">
+                  <span class="bg-green-300 rounded font-medium text-sm text-secondary p-0.5">
+                    {{ prdSmlr.discount_percent | disc }}
                   </span>
                   <p class="text-xs font-normal text-left text-gray-400 line-through">
-                    RP99.9999,00
+                    {{ prdSmlr.price_initial | rupiah }}
                   </p>
                 </span>
               </div>
             </div>
           </template>
         </div>
+        <div class="flex items-center justify-center pt-5">
+          <router-link class="rounded btn btn-outline-secondary w-fit" to="/exhibition">
+            Lihat lainnya
+          </router-link>
+        </div>
       </div>
     </div>
-  </main>
+  </div>
 </template>
 
 <script>
-import SearchBar from '@/components/exhibition/SearchBar.vue'
-
 import axios from 'axios'
 import * as axConfig from '@/config.js'
+import * as currencyHelper from '@/helper/CurrencyHelper.js'
+import * as stringHelper from '@/helper/StringHelper.js'
 
 export default {
   name: 'ProductView',
@@ -280,11 +335,15 @@ export default {
         shop: false,
         shopProduct: false,
         similar: false
-      }
+      },
+      isError: {
+        shop: false,
+        shopMsg: '',
+        sProduct: false,
+        similar: false
+      },
+      notFound: false
     }
-  },
-  components: {
-    SearchBar
   },
   props: {},
   methods: {
@@ -317,74 +376,136 @@ export default {
       try {
         var response = await axios.get(axConfig.productUrl + this.$route.query.pid)
         this.productDetail = response.data.data
+        this.notFound = false
         this.isLoading.product = false
 
         this.getShop()
         this.getShopProduct()
         this.getSimilarProduct()
-      } catch (error) {
-        console.log(error)
+      } catch (err) {
+        if (err.response && err.response.status === 404) {
+          console.log('not-found')
+          this.notFound = true
+        } else if (err.response) {
+          console.log('a')
+          // this.$router.push({ name: 'server-error', props: { statusCode: err.response.status, message: err.response.data.message, subMessage: 'Silahkan coba kembali setelah beberapa saat.</br>Hubungi kontak dibawah jika halaman masih tidak bisa diakses.' } })
+        } else if (err.code === 'ERR_NETWORK') {
+          console.log('b')
+          // this.$router.push({ name: 'server-error', props: { statusCode: 500, message: 'Kami sedang offline', subMessage: 'Silahkan coba kembali setelah beberapa saat.</br>Hubungi kontak dibawah jika halaman masih tidak bisa diakses.' } })
+        } else {
+          console.log(err)
+          // this.$router.push({ name: 'server-error', props: { statusCode: err.code, message: 'Halaman Rusak. Coba lagi nanti', subMessage: 'Hubungi kontak dibawah jika halaman masih tidak bisa diakses.' } })
+        }
       }
-    },
-    async getProduct () {
-      axios.get(axConfig.productUrl + this.$route.query.pid)
-        .then((response) => {
-          return response.data.data
-        })
-        .catch((error) => {
-          return error
-        })
     },
     async getShop () {
       this.isLoading.shop = true
-      this.shopDetail = await axios.get(axConfig.shopUrl + this.productDetail.store_domain, {
-        params: {
-          with_product: false
+      try {
+        var response = await axios.get(axConfig.shopUrl + this.productDetail.store_domain, {
+          params: {
+            with_product: false
+          }
+        })
+
+        this.shopDetail = response.data.data
+        this.isError.shop = false
+      } catch (err) {
+        this.isError.shop = true
+        if (err.response && err.response.status === 404) {
+          console.log('not-found')
+          this.isError.shopMsg = 'Shop not found!'
+        } else if (err.response) {
+          console.log('a')
+          this.isError.shopMsg = err.response.data.message
+          // this.$router.push({ name: 'server-error', props: { statusCode: err.response.status, message: err.response.data.message, subMessage: 'Silahkan coba kembali setelah beberapa saat.</br>Hubungi kontak dibawah jika halaman masih tidak bisa diakses.' } })
+        } else if (err.code === 'ERR_NETWORK') {
+          console.log('b')
+          this.isError.shopMsg = 'Kami sedang offline.'
+          // this.$router.push({ name: 'server-error', props: { statusCode: 500, message: 'Kami sedang offline', subMessage: 'Silahkan coba kembali setelah beberapa saat.</br>Hubungi kontak dibawah jika halaman masih tidak bisa diakses.' } })
+        } else {
+          console.log(err)
+          this.isError.shopMsg = 'Halaman rusak!'
+          // this.$router.push({ name: 'server-error', props: { statusCode: err.code, message: 'Halaman Rusak. Coba lagi nanti', subMessage: 'Hubungi kontak dibawah jika halaman masih tidak bisa diakses.' } })
         }
-      })
-        .then((response) => {
-          return response.data.data
-        })
-        .catch(() => {
-          return null
-        })
+      }
+
       this.isLoading.shop = false
     },
     async getShopProduct () {
       this.isLoading.shopProduct = true
-      this.shopProduct = await axios.get(axConfig.shopUrl + this.productDetail.store_domain + '/products', {
-        params: {
-          page: 1,
-          per_page: 5
-        }
-      })
-        .then((response) => {
-          return response.data.data
+      try {
+        const response = await axios.get(axConfig.shopUrl + this.productDetail.store_domain + '/products', {
+          params: {
+            page: 1,
+            per_page: 5
+          }
         })
-        .catch(() => {
-          return []
-        })
+
+        this.shopProduct = response.data.data
+        this.isError.sProduct = false
+      } catch (err) {
+        this.isError.sProduct = true
+        this.shopProduct = []
+      }
+
       this.isLoading.shopProduct = false
     },
     async getSimilarProduct () {
       this.isLoading.similar = true
-      this.productSimilar = await axios.get(axConfig.productUrl + 'similar', {
-        params: {
-          id: this.productDetail.uuid,
-          page: 1,
-          per_page: 60
-        }
-      })
-        .then((response) => {
-          return response.data.data
+      try {
+        const response = await axios.get(axConfig.productUrl + 'similar/' + this.productDetail.uuid, {
+          params: {
+            page: 1,
+            per_page: 60
+          }
         })
-        .catch(() => {
-          return []
-        })
+
+        this.isError.similar = false
+        this.productSimilar = response.data.data
+      } catch (err) {
+        this.isError.similar = true
+        this.productSimilar = []
+      }
+
       this.isLoading.similar = false
     },
     showShop () {
       this.$router.push({ name: 'shop', params: { domain: this.productDetail.store_domain } })
+    },
+    showProduct (source, index) {
+      const prd = source === 'shop' ? this.shopProduct[index] : this.productSimilar[index]
+
+      // push routes then reload the page
+      this.$router.push({ name: 'product', params: { slug: stringHelper.createSlug(prd.name) }, query: { pid: prd.uuid } }).then(() => {
+        window.location.reload()
+      })
+    }
+  },
+  filters: {
+    shortTitle: function (value) {
+      return stringHelper.shortenStr(value, 15)
+    },
+    rupiah: function (value) {
+      return currencyHelper.currencyFormat(value, '.', 'Rp')
+    },
+    disc: function (value) {
+      const disc = value.split('.', value)
+      if (disc[1] === 0 || disc[1] === '00') {
+        return Math.floor(value) + '%'
+      } else {
+        return value + '%'
+      }
+    },
+    weight: function (value) {
+      return (parseFloat(value) / 1000) + ' Kg'
+    },
+    datef: function (value) {
+      const inDate = new Date(value)
+      const dYear = inDate.getFullYear()
+      const dMonth = inDate.getMonth()
+      const dDay = inDate.getDay()
+
+      return (dDay < 10 ? '0' + dDay : dDay) + '-' + (dMonth < 10 ? '0' + dMonth : dMonth) + '-' + dYear
     }
   },
   beforeMount () {
