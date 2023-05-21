@@ -1,5 +1,5 @@
 <template>
-  <div id="filter-mobile" ref="filter-mobile" class="fixed w-full h-full inset-x-0 z-50 top-10 pt-10 px-2 backdrop-blur-[2px] bg-white/30 transform translate-y-full transition-all ease-in-out duration-200 sm:top-16 md:hidden">
+  <div id="filter-mobile" ref="filter-mobile" class="duration-200 ease-in-out transform translate-y-full mobile-layer bg-white/30">
     <div class="relative h-full px-2 pt-1.5 pb-28 bg-white border-2 border-gray-400 rounded-t-md">
       <span class="sticky top-0 z-10 flex items-center justify-between mb-2 bg-white flex-nowrap">
         <h5 class="text-lg font-medium">Filters</h5>

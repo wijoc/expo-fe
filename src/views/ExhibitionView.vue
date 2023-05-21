@@ -600,8 +600,6 @@ export default {
             }
           })
         }
-        console.log(event.target.checked)
-        console.log(slctd)
       } else {
         this.productFilter.city = this.productFilter.city.concat(slctd)
       }
@@ -609,6 +607,7 @@ export default {
     closeFilter (el) {
       if (!(el.target.id === 'location-filter') && !(el.target.id === 'close-location-filter')) {
         var filterDOM = document.getElementById('location-filter')
+
         if (!filterDOM.contains(el.target.parentNode)) {
           if (el.target.id !== 'filter-shop-location-button') {
             this.toggleLocFilter('desktop', false)

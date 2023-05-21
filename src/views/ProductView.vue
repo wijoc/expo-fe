@@ -18,7 +18,7 @@
       </div>
     </div>
     <div class="flex flex-col gap-y-2 md:gap-4 md:divide-y-0" v-else>
-      <div class="grid content-start grid-flow-row grid-cols-12 pt-2 pb-3 bg-white shadow-sm md:gap-4">
+      <div class="grid content-start grid-flow-row grid-cols-12 px-2 py-3 bg-white shadow-sm md:gap-4">
         <template v-if="this.isLoading.product">
           <div class="col-span-12 bg-white h-fit sm:col-span-5 md:row-span-2 md:top-0">
             <ul ref="carousel-preview" class="flex flex-row gap-3 overflow-x-scroll overflow-y-hidden flex-nowrap max-h-56 snap-mandatory snap-x sm:overflow-x-hidden">
@@ -173,13 +173,24 @@
                   <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
                 </svg>
               </button>
-              <button class="btn btn-base btn-outline-secondary bg-secondary/20 w-[90%] h-fit rounded">
+              <!-- Cart Button for mobile -->
+              <button id="add-to-cart-mobile-toggle" ref="add-to-cart-mobile-toggle" class="btn btn-base btn-outline-secondary bg-secondary/20 w-[90%] h-fit rounded md:hidden" @click="toggleAddCart()">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="max-w-[1rem] max-h-4 fill-current">
                   <!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
                   <path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/>
                 </svg>
                 Keranjang
               </button>
+
+              <!-- Cart Button for desktop -->
+              <button class="hidden md:btn btn-base btn-outline-secondary bg-secondary/20 w-[90%] h-fit rounded">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="max-w-[1rem] max-h-4 fill-current">
+                  <!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                  <path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/>
+                </svg>
+                Keranjang
+              </button>
+
               <button class="btn btn-base btn-secondary w-[90%] min-h-full rounded text-sm xs:text-base" v-if="this.productDetail.stock_status === 'Preorder'">
                 Pesan Langsung
               </button>
@@ -191,7 +202,7 @@
         </template>
       </div>
       <!-- Shop Section -->
-      <div class="flex items-start justify-start w-full gap-2 p-2 sm:rounded sm:shadow-lg">
+      <div class="flex items-start justify-start w-full gap-2 px-2 py-3 bg-white sm:rounded sm:shadow">
         <template v-if="this.isLoading.shop">
           <div class="w-24 h-24 rounded bg-gray-300/80 skeleton"></div>
           <div class="flex flex-col items-start gap-1 mx-2">
@@ -223,7 +234,7 @@
         </template>
       </div>
       <!-- Product-in-shop Section -->
-      <div class="pt-3">
+      <div class="px-2 py-3 bg-white">
         <div class="flex justify-between flex-nowrap">
           <h4 class="font-medium tracking-wide text-md">Lainnya dari toko ini</h4>
           <h4 class="text-sm font-light tracking-wide text-secondary underline underline-offset-[3px] cursor-pointer" v-if="!this.isLoading.shop" @click="showShop()">
@@ -272,7 +283,7 @@
         </div>
       </div>
       <!-- Similar Product Section -->
-      <div class="pt-3">
+      <div class="px-2 py-3 bg-white">
         <div class="flex justify-between flex-nowrap">
           <h4 class="font-medium tracking-wide text-md">Produk serupa</h4>
         </div>
@@ -312,14 +323,84 @@
         </div>
       </div>
     </div>
+
+    <!-- Mobile Add Cart -->
+    <div id="add-to-cart-mobile" ref="add-to-cart-mobile" class="duration-200 ease-in-out transform translate-y-full md:hidden mobile-layer bg-white/30">
+      <div class="relative flex flex-col gap-3 h-full px-2 pt-1.5 pb-14 bg-white border-2 border-gray-400 rounded-t-md">
+        <span class="sticky top-0 z-10 flex items-center justify-between mb-2 bg-white flex-nowrap">
+          <h5 class="text-lg font-medium">Tambah ke keranjang</h5>
+          <svg id="add-to-cart-mobile-close" ref="add-to-cart-mobile-close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" class="w-6 h-6 text-gray-500 cursor-pointer fill-current" @click="toggleAddCart(false)">
+            <!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+            <path d="M310.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 210.7 54.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L114.7 256 9.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 301.3 265.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L205.3 256 310.6 150.6z"/>
+          </svg>
+        </span>
+        <template v-if="this.isLoading.product">
+          <div class="flex gap-1 mb-3 flex-nowrap">
+            <div class="flex items-center justify-center w-4/12 h-24 bg-gray-300/80 skeleton"></div>
+            <div class="w-8/12">
+              <p class="w-full h-6 rounded bg-gray-300/80 skeleton"></p>
+              <p class="w-1/2 h-6 mt-2 rounded bg-gray-300/80 skeleton"></p>
+            </div>
+          </div>
+        </template>
+        <template v-else>
+          <div class="flex gap-1 mb-3 flex-nowrap">
+            <div class="flex items-center justify-center w-4/12 h-24 bg-gray-100/50">
+              <img src="@/assets/img/product/product_1.jpg" alt="" class="object-scale-down max-w-full max-h-24">
+            </div>
+            <div class="w-8/12">
+              <p class="title-product">{{ this.productDetail.name | shortTitle }}</p>
+              <p class="font-medium text-left">{{ this.productDetail.price_net | rupiah }}</p>
+              <span class="flex items-center gap-1 flex-nowrap">
+                <span class="bg-tertiary/60 rounded font-medium text-sm text-white py-0.5 px-1.5">
+                  {{ this.productDetail.discount_percent | disc }}
+                </span>
+                <h5 class="font-normal text-left text-gray-400 line-through">
+                  {{ this.productDetail.price_initial | rupiah }}
+                </h5>
+              </span>
+            </div>
+          </div>
+          <div class="flex flex-col w-full">
+            <p>Catatan <span class="text-sm italic">(optional)</span></p>
+            <textarea name="inputCartNote" id="input-m-cart-note" class="w-full p-1 text-sm rounded form-control no-resize" v-model="toAddToCart.note"></textarea>
+          </div>
+          <div class="flex items-center justify-between w-full">
+            <p>Jumlah</p>
+            <div class="flex h-full flex-nowrap w-fit">
+              <span class="items-center rounded-l cursor-pointer btn btn-outline-gray" @click="changeQty('decrease')">
+                <i class="w-4 h-4 fill-current fa-solid fa-minus"></i>
+              </span>
+              <span class="px-3 py-1 border-gray-400 border-y-1">
+                <input type="number" name="inputCartQty" id="input-m-cart-qty" class="text-center max-w-[4rem] form-number no-spinner focus:outline-none focus:ring-0" :min="this.productDetail.minimal_purchase" step="1" v-model="toAddToCart.qty">
+              </span>
+              <button class="rounded-r cursor-pointer btn btn-outline-gray" @click="changeQty('increase')">
+                <i class="w-4 h-4 fill-current fa-solid fa-plus"></i>
+              </button>
+            </div>
+          </div>
+          <div class="flex items-center justify-between w-full">
+            <p>Total</p>
+            <h5 class="text-xl font-medium">{{ this.toAddToCart.subtotal | rupiah }}</h5>
+          </div>
+          <div class="absolute right-0 flex items-center justify-center w-full px-3 bottom-14" @click="addToCart()">
+            <button class="w-full rounded btn btn-secondary">
+              Tambahkan ke keranjang
+            </button>
+          </div>
+        </template>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import Swal from 'sweetalert2'
 import axios from 'axios'
 import * as axConfig from '@/config.js'
 import * as currencyHelper from '@/helper/CurrencyHelper.js'
 import * as stringHelper from '@/helper/StringHelper.js'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'ProductView',
@@ -342,11 +423,22 @@ export default {
         sProduct: false,
         similar: false
       },
-      notFound: false
+      notFound: false,
+      toAddToCart: {
+        uuid: null,
+        storeID: null,
+        note: null,
+        qty: 1,
+        subtotal: 0
+      },
+      showAddCartM: false
     }
   },
   props: {},
   methods: {
+    ...mapActions({
+      addCart: 'carts/addCart'
+    }),
     hoverItem (value) {
       var preview = this.$refs['carousel-preview']
       preview.querySelector(value).scrollIntoView({ block: 'end', inline: 'nearest', behavior: 'smooth' })
@@ -378,6 +470,11 @@ export default {
         this.productDetail = response.data.data
         this.notFound = false
         this.isLoading.product = false
+
+        /** Set data to-add-to-cart */
+        this.toAddToCart.uuid = this.productDetail.uuid
+        this.toAddToCart.storeID = this.productDetail.store_id
+        this.toAddToCart.qty = parseInt(this.productDetail.minimal_purchase)
 
         this.getShop()
         this.getShopProduct()
@@ -479,6 +576,93 @@ export default {
       this.$router.push({ name: 'product', params: { slug: stringHelper.createSlug(prd.name) }, query: { pid: prd.uuid } }).then(() => {
         window.location.reload()
       })
+    },
+    toggleAddCart (tggl = null) {
+      this.showAddCartM = tggl !== null ? tggl : !this.showAddCartM
+      this.toggleAddCartClass(this.showAddCartM)
+    },
+    toggleAddCartClass (tggl = false) {
+      if (tggl) {
+        this.$refs['add-to-cart-mobile'].classList.add('translate-y-0')
+        this.$refs['add-to-cart-mobile'].classList.remove('translate-y-full')
+      } else {
+        this.$refs['add-to-cart-mobile'].classList.add('translate-y-full')
+        this.$refs['add-to-cart-mobile'].classList.remove('translate-y-0')
+      }
+    },
+    closeAddCartM (el) {
+      if (!(el.target.id === 'add-to-cart-mobile-toggle') && !(el.target.id === 'add-to-cart-mobile-close')) {
+        const filterDOM = document.getElementById('add-to-cart-mobile')
+        if (!filterDOM.contains(el.target.parentNode)) { // Check if filterDOM not contains target parentNode
+          if (el.target.id !== 'add-to-cart-mobile-close') {
+            this.toggleAddCart(false)
+          }
+        }
+      }
+    },
+    changeQty (action) {
+      if (action === 'increase') {
+        this.toAddToCart.qty = parseInt(this.toAddToCart.qty) + 1
+      } else if (action === 'decrease') {
+        this.toAddToCart.qty = parseInt(this.toAddToCart.qty) - 1
+      }
+    },
+    calcSubTotal () {
+      this.toAddToCart.subtotal = Math.round(parseFloat(this.productDetail.price_net) * parseInt(this.toAddToCart.qty) * 100) / 100
+    },
+    async addToCart () {
+      Swal.fire({
+        position: 'center',
+        showConfirmButton: false,
+        customClass: 'overflow-hidden w-44 h-44',
+        html: `<div class="inline-block overflow-hidden bg-transparent w-[7.5rem] h-[7.5rem]">
+            <div class="relative flex items-center justify-center w-full h-full overflow-hidden bg-transparent">
+              <div class="absolute w-14 h-14 border-[10px] border-secondary border-solid border-t-transparent rounded-[50%] animate-[spin_1s_linear_infinite] box-content"></div>
+            </div>
+          </div>`,
+        onBeforeOpen () {
+          Swal.showLoading()
+        },
+        onAfterClose () {
+          Swal.hideLoading()
+        },
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        allowEnterKey: false
+      })
+
+      const response = await this.addCart({ uuid: this.toAddToCart.uuid, note: this.toAddToCart.note, qty: this.toAddToCart.qty })
+      Swal.close()
+      this.toggleAddCart(false)
+
+      if (!response.success) {
+        if (response.code === 'ERR_NETWORK') {
+          Swal.fire({
+            position: 'center',
+            showConfirmButton: true,
+            timer: 2500,
+            icon: 'error',
+            title: 'Mohon maaf, Kami sedang offline.',
+            html: 'Silahkan coba lagi nanti.'
+          })
+        } else {
+          Swal.fire({
+            position: 'center',
+            showConfirmButton: true,
+            timer: 2500,
+            icon: 'error',
+            title: 'Kesalaham sistem',
+            html: response.message + '. Silahkan coba lagi nanti.'
+          })
+        }
+      } else {
+        this.$root.$emit('showcart', true)
+      }
+    }
+  },
+  watch: {
+    'toAddToCart.qty': function (newValue) {
+      this.calcSubTotal()
     }
   },
   filters: {
@@ -510,6 +694,10 @@ export default {
   },
   beforeMount () {
     this.getData()
+    document.addEventListener('click', this.closeAddCartM)
+  },
+  beforeDestroy () {
+    document.removeEventListener('click', this.closeAddCartM)
   }
 }
 </script>

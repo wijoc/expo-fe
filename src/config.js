@@ -8,15 +8,14 @@ export const shopCategoryUrl = apiDomain + prefix + 'categories/store/'
 export const provinceUrl = apiDomain + prefix + 'provinces/'
 export const cityUrl = apiDomain + prefix + 'cities/'
 export const districtUrl = apiDomain + prefix + 'districts/'
+export const cartUrl = apiDomain + prefix + 'cart/'
 
 export const headers = {
   Authorization: 'Bearer ' + localStorage.getItem('access_token')
 }
 
-export const getHeaders = function (extraHeader = {}) {
-  const main = {
-    Authorization: 'Bearer ' + localStorage.getItem('access_token')
-  }
+export const getHeaders = function (token = null, extraHeader = {}) {
+  const main = token !== null ? { Authorization: 'Bearer ' + token } : {}
 
   const newHeader = Object.assign(main, extraHeader)
 

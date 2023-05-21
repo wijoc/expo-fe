@@ -222,6 +222,19 @@
     @apply font-normal bg-white border border-gray-300 shadow placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary;
   }
 
+  .form-number.no-spinner::-webkit-outer-spin-button, .form-number.no-spinner::-webkit-inner-spin-button {
+    /* Chrome, Safari, Edge, Opera */
+    -webkit-appearance: none;
+    margin: 0;
+
+    /* Firefox */
+    -moz-appearance: textfield;
+  }
+
+  textarea.form-control.no-resize {
+    resize: none;
+  }
+
   .form-control.form-control-xs {
     @apply text-sm px-1 py-0.5;
   }
@@ -408,6 +421,10 @@
 
   .page-item.disabled {
     @apply text-gray-400 cursor-not-allowed hover:bg-white;
+  }
+
+  .mobile-layer {
+    @apply fixed w-full h-full inset-x-0 z-50 top-10 pt-5 px-2 backdrop-blur-[2px] transition-all sm:top-16;
   }
 }
 

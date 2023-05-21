@@ -161,7 +161,7 @@ export default {
         try {
           if (getData === 'new' || getData === 'except-cache') {
             const response = await axios.get(axConfig.shopUrl, {
-              headers: axConfig.getHeaders({ 'Content-type': 'application/json' }),
+              headers: axConfig.getHeaders(null, { 'Content-type': 'application/json' }),
               params: {
                 with_product: true,
                 search: this.keyword,
@@ -195,7 +195,7 @@ export default {
             }
           } else {
             const response = await axios.get(axConfig.shopUrl + 'multiple', {
-              headers: axConfig.getHeaders({ 'Content-type': 'application/json' }),
+              headers: axConfig.getHeaders(null, { 'Content-type': 'application/json' }),
               params: {
                 with_product: true,
                 ids: this.vxShopIDs[this.info.active_page]

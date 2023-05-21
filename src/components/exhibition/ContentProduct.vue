@@ -135,7 +135,7 @@ export default {
         try {
           if (getData === 'new' || getData === 'except-cache') {
             const response = await axios.get(axConfig.productUrl, {
-              headers: axConfig.getHeaders({ 'Content-type': 'application/json' }),
+              headers: axConfig.getHeaders(null, { 'Content-type': 'application/json' }),
               params: {
                 search: this.keyword,
                 sort: this.sort.by,
@@ -170,7 +170,7 @@ export default {
             }
           } else {
             const response = await axios.get(axConfig.productUrl + 'multiple', {
-              headers: axConfig.getHeaders({ 'Content-type': 'application/json' }),
+              headers: axConfig.getHeaders(null, { 'Content-type': 'application/json' }),
               params: {
                 ids: this.vxProductIDs[this.info.active_page]
               }
@@ -231,21 +231,21 @@ export default {
   watch: {
     keyword: {
       handler: function (newValue) {
-        this.storeShopIDs({ command: 'destroy' })
+        this.storeProductIDs({ command: 'destroy' })
         this.changePage(1)
       }
     },
     filterData: {
       deep: true,
       handler: function (newValue) {
-        this.storeShopIDs({ command: 'destroy' })
+        this.storeProductIDs({ command: 'destroy' })
         this.changePage(1)
       }
     },
     sortData: {
       deep: true,
       handler: function (newValue) {
-        this.storeShopIDs({ command: 'destroy' })
+        this.storeProductIDs({ command: 'destroy' })
         this.changePage(1)
       }
     }
@@ -254,7 +254,7 @@ export default {
     this.changePage(1)
   },
   beforeDestroy () {
-    this.storeShopIDs({ command: 'destroy' })
+    this.storeProductIDs({ command: 'destroy' })
   }
 }
 </script>

@@ -1,30 +1,36 @@
 <template>
-  <div class="bg-gray-100/50">
+  <div class="relative bg-gray-100/50">
     <ExhibitionHeader />
     <SearchBar
       :shopSearch="this.$route.meta.shopsearch || false"
       :search.sync="searchKeyword"
+      :showCart.sync="showCart"
       @set="setSearch($event)" />
-    <slot />
+    <ExhibitionCart
+      :show.sync="showCart" />
+    <slot :show-cart="toggleCart" />
     <TheFooter />
   </div>
 </template>
 
 <script>
 import ExhibitionHeader from '@/components/visitor/ExhibitionHeader.vue'
-import SearchBar from '@/components/exhibition/SearchBar.vue'
 import TheFooter from '@/components/visitor/TheFooter.vue'
+import ExhibitionCart from '@/components/exhibition/ExhibitionCart.vue'
+import SearchBar from '@/components/exhibition/SearchBar.vue'
 
 export default {
   name: 'ExhibitionLayout',
   components: {
     ExhibitionHeader,
     SearchBar,
+    ExhibitionCart,
     TheFooter
   },
   data () {
     return {
-      searchKeyword: ''
+      searchKeyword: '',
+      showCart: false
     }
   },
   props: {},
@@ -47,9 +53,13 @@ export default {
           this.$router.push({ query: { s: this.searchKeyword } })
         }
       }
+    },
+    toggleCart (tggl = false) {
+      this.showCart = tggl
     }
   },
   created () {
+    this.$root.$on('showcart', this.toggleCart)
     this.searchKeyword = this.$route.query.s
   }
 }

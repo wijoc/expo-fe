@@ -1,11 +1,14 @@
 export const shortenStr = function (str, limit) {
-  const strLimit = isNaN(limit) ? 20 : limit
-  let newStr = str.trimLeft().substr(0, 35)
+  if (typeof str !== 'undefined') {
+    const strLimit = isNaN(limit) ? 20 : limit
 
-  if (str.trimLeft().length > strLimit) {
-    newStr = newStr + '...'
+    let newStr = str.trimLeft().substr(0, 35)
+
+    if (str.trimLeft().length > strLimit) {
+      newStr = newStr + '...'
+    }
+    return newStr
   }
-  return newStr
 }
 
 export const createSlug = function (str) {
