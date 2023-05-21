@@ -78,8 +78,7 @@
                     </label>
                   </div>
                   <div class="w-full pl-1.5 pr-1 text-xs font-light text-justify">
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                    Dolorem minus suscipit est sunt maiores quasi officia fugiat explicabo dicta sit.
+                    {{ prd.note }}
                   </div>
                   <div class="flex items-center justify-end gap-3 mt-2 flex-nowrap">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="w-4 h-4" @click="deleteCartItem(i, p)">
@@ -201,8 +200,7 @@
                   </label>
                 </div>
                 <div class="w-full pl-1.5 pr-1 text-xs font-light text-justify">
-                  Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                  Dolorem minus suscipit est sunt maiores quasi officia fugiat explicabo dicta sit.
+                  {{ prd.note }}
                 </div>
                 <div class="flex items-center justify-end gap-3 mt-2 flex-nowrap">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="w-4 h-4" @click="deleteCartItem(i, p)">
@@ -303,8 +301,9 @@ export default {
     closeCart (el) {
       const toggleDOM = document.getElementById('toggle-cart-button')
       if (!toggleDOM.contains(el.target.parentNode) && !(el.target.id === 'cart-mobile-close') && !(el.target.id === 'toggle-cart-button')) {
-        const cartDOM = document.getElementById('cart-mobile')
-        if (!cartDOM.contains(el.target.parentNode)) { // Check if cartDOM not contains target parentNode
+        const mCartDOM = document.getElementById('cart-mobile')
+        const dCartDOM = document.getElementById('cart-desktop')
+        if (!mCartDOM.contains(el.target.parentNode) && !dCartDOM.contains(el.target.parentNode)) { // Check if cartDOM not contains target parentNode
           if (el.target.id !== 'cart-mobile-close') {
             this.toggleCart(false)
           }

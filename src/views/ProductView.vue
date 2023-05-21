@@ -163,8 +163,26 @@
             </p>
           </div>
           <div class="col-span-12 fixed w-full pt-1.5 pb-2 px-1.5 left-0 bottom-0 bg-white z-50 md:relative md:col-span-7 md:row-span-1 md:rounded md:h-fit md:z-0">
-            <div class="hidden md:flex md:flex-col md:w-full">
+            <div class="hidden md:flex md:flex-col md:w-full md:mb-3">
               <p class="font-medium">Atur jumlah dan catatan</p>
+              <div class="flex items-center justify-between w-full">
+                <p>Jumlah</p>
+                <div class="flex h-full flex-nowrap w-fit">
+                  <span class="items-center rounded-l cursor-pointer btn btn-outline-gray" @click="changeQty('decrease')">
+                    <i class="w-4 h-4 fill-current fa-solid fa-minus"></i>
+                  </span>
+                  <span class="px-3 py-1 border-gray-400 border-y-1">
+                    <input type="number" name="inputCartQty" id="input-m-cart-qty" class="text-center max-w-[4rem] form-number no-spinner focus:outline-none focus:ring-0" :min="this.productDetail.minimal_purchase" step="1" v-model="toAddToCart.qty">
+                  </span>
+                  <button class="rounded-r cursor-pointer btn btn-outline-gray" @click="changeQty('increase')">
+                    <i class="w-4 h-4 fill-current fa-solid fa-plus"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="flex flex-col w-full">
+                <p>Catatan <span class="text-sm italic">(optional)</span></p>
+                <textarea name="inputCartNote" id="input-m-cart-note" class="w-full p-1 text-sm rounded form-control no-resize" v-model="toAddToCart.note"></textarea>
+              </div>
             </div>
             <div class="flex gap-1 flex-nowrap">
               <button class="h-full rounded text-primary btn btn-base btn-outline-primary w-fit">
@@ -183,7 +201,7 @@
               </button>
 
               <!-- Cart Button for desktop -->
-              <button class="hidden md:btn btn-base btn-outline-secondary bg-secondary/20 w-[90%] h-fit rounded">
+              <button class="hidden md:btn btn-base btn-outline-secondary bg-secondary/20 w-[90%] h-fit rounded" @click="addToCart()">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="max-w-[1rem] max-h-4 fill-current">
                   <!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
                   <path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/>
@@ -656,6 +674,8 @@ export default {
           })
         }
       } else {
+        this.toAddToCart.qty = this.productDetail.minimal_purchase
+        this.toAddToCart.note = null
         this.$root.$emit('showcart', true)
       }
     }
