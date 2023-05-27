@@ -1,5 +1,5 @@
 <template>
-  <main class="container min-h-screen">
+  <main class="container min-h-screen pb-10">
     <div id="content" class="relative flex flex-row gap-5 pt-12 flex-nowrap sm:pt-16">
       <!-- Moblie Filter -->
       <div id="filter-mobile" ref="filter-mobile" class="fixed w-full h-full inset-x-0 z-50 top-10 pt-10 px-2 backdrop-blur-[2px] bg-white/30 transform translate-y-full transition-all ease-in-out duration-200 sm:top-16 md:hidden">

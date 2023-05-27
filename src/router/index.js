@@ -50,12 +50,6 @@ const routes = [
     meta: { shopsearch: false, layout: ExhibitionLayout }
   },
   {
-    path: '/:domain?',
-    name: 'shop',
-    component: ShopView,
-    meta: { shopsearch: true, layout: ExhibitionLayout }
-  },
-  {
     path: '/exhibition/product/:slug?',
     name: 'product',
     component: ProductView,
@@ -72,7 +66,7 @@ const routes = [
     name: 'faq-detail',
     component: FaqView,
     meta: { layout: LandingLayout }
-  }
+  },
   // {
   //   path: '/faq/question/:id?',
   //   name: 'faq',
@@ -80,6 +74,12 @@ const routes = [
   //   props: { content: 'question-detail' },
   //   meta: { layout: LandingLayout }
   // },
+  {
+    path: '/:domain?',
+    name: 'shop',
+    component: ShopView,
+    meta: { shopsearch: true, layout: ExhibitionLayout }
+  }
 ]
 
 const router = new VueRouter({
